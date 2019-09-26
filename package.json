@@ -1,0 +1,20 @@
+{
+  "name": "personalwizard",
+  "version": "1.0.0",
+  "description": "## [web-push](https://www.npmjs.com/package/web-push) API - https required!   - how to https on duckDNS (see [https Readme](./httpsReadme.md))",
+  "main": "index.js",
+  "dependencies": {
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/rplc/personalwizard.git"
+  },
+  "author": "rplc",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/rplc/personalwizard#readme"
+}
