@@ -31,6 +31,7 @@ request.post(env.kodi + "/jsonrpc", {
             "year": 2002
         } */
 
+        // TODO problem: max 40 requests per 10s -> need to split up my requests/create a spool (might respond with 429 = need to wait)
         request.get("https://api.themoviedb.org/3/tv/" + show.imdbnumber + "?api_key=" + env.tmdbAPI, (error, response, body) => {
             if (error) {
                 console.error(error);
@@ -38,7 +39,7 @@ request.post(env.kodi + "/jsonrpc", {
             }
 
             body = JSON.parse(body);
-            console.log(show.title, show.season, body.number_of_seasons);
+            console.log(response.statusCode, show.title + " (" + show.imdbnumber + ")", show.season, body.number_of_seasons);
         });
     });
 });
