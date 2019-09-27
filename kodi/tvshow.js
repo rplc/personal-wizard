@@ -40,6 +40,7 @@ request.post(env.kodi + "/jsonrpc", {
 
             body = JSON.parse(body);
             console.log(response.statusCode, show.title + " (" + show.imdbnumber + ")", show.season, body.number_of_seasons);
+            //TODO if kodi seasons + 1 = tmdb seasons -> check last entry in seasons-array and check the air_date -> might be null -> ignore this warning
         });
     });
 });
