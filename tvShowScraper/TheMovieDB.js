@@ -1,7 +1,7 @@
 
-function TheMovieDB() {
+class TheMovieDB {
 
-    this.scrape = async () => {
+    async scrape() {
         const request = require("request"),
             env = require("../env.json");
 

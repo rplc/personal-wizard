@@ -1,25 +1,20 @@
-/**
- *  doc code am Anfang der Datei
-- als object/Klasse aufbauen/scopen!!!
-- mongo dB
-- 3 Methoden scrapeKodi, scrapeOnline, evaluate oder so
-- Kodi aufrufen, legt Mongo Eintrag an, online holt sich max 40 Mongo Einträge sortiert bei online scrape datum, macht dann einen 10s timeout und ruft sich selbst auf, bis alle durch sind
- */
 
-function Kodi() {
 
-    this.doFullSync = async () => {
+class Kodi {
+
+    async doFullSync() {
         const TheMovieDB = require("./TheMovieDB.js"),
             movieDB = new TheMovieDB();
 
         await this.scrapeKodi();
 
         movieDB.scrape();
-    };
+    }
 
-    this.scrapeKodi = async () => {
+    async scrapeKodi() {
         const request = require("request"),
-            env = require("../env.json");
+            env = require("../env.json"),
+            MongoClient = require('mongodb').MongoClient;
 
         return new Promise(resolve => {
             request.post(env.kodi + "/jsonrpc", {
@@ -36,6 +31,7 @@ function Kodi() {
                     console.error(error);
                     return;
                 }
+                
                 const result = body.result,
                     tvshows = result && result.tvshows || [];
                 //TODO mongo upsert
@@ -47,7 +43,7 @@ function Kodi() {
                 resolve();
             });
         });
-    };
+    }
 }
 
 module.exports = Kodi;

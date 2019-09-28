@@ -1,5 +1,8 @@
 # Personal Wizard/Assistent
 
+## mongo
+`mongod --dbpath=./mongo`
+
 ## [web-push](https://www.npmjs.com/package/web-push) API
 - https required!
   - how to https on duckDNS (see [https Readme](./httpsReadme.md))
