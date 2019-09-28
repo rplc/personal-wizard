@@ -3,28 +3,33 @@
 class Kodi {
 
     async doFullSync() {
-        const TheMovieDB = require("./TheMovieDB.js"),
+        const me = this,
+            TheMovieDB = require("./TheMovieDB.js"),
             movieDB = new TheMovieDB();
 
-        await this.scrapeKodi();
+        await me.mongoConnect();
+
+        await me.scrapeKodi();
+
+        me.mongoClose();
 
         movieDB.scrape();
     }
 
     async scrapeKodi() {
-        const request = require("request"),
-            env = require("../env.json"),
-            MongoClient = require('mongodb').MongoClient;
+        const me = this,
+            request = require("request"),
+            env = require("../env.json");
 
         return new Promise(resolve => {
             request.post(env.kodi + "/jsonrpc", {
                 json: {
-                    "jsonrpc": "2.0",
-                    "method": "VideoLibrary.GetTVShows",
-                    "params": {
-                        "properties": ["title", "year", "imdbnumber", "playcount", "season", "fanart"]
+                    jsonrpc: "2.0",
+                    method: "VideoLibrary.GetTVShows",
+                    params: {
+                        properties: ["title", "year", "imdbnumber", "playcount", "season"]
                     },
-                    "id": "libTvShows"
+                    id: "libTvShows"
                 }
             }, (error, response, body) => {
                 if (error) {
@@ -32,17 +37,57 @@ class Kodi {
                     return;
                 }
                 
-                const result = body.result,
-                    tvshows = result && result.tvshows || [];
-                //TODO mongo upsert
+                const collection = me.collection,
+                    result = body.result,
+                    tvshows = result && result.tvshows || [],
+                    update = tvshows.map((show) => {
+                        return {
+                            updateOne: {
+                                filter: {
+                                    _id: show.tvshowid
+                                },
+                                update: {
+                                    _id: show.tvshowid,
+                                    external_id: show.imdbnumber,
+                                    kodi_scape_ts: Date.now,
+                                    kodi_data: show
+                                },
+                                upsert: true
+                            }
+                        }
+                    });
 
-                tvshows.forEach(show => {
-                    console.log(show.title + " (" + show.imdbnumber + ")", show.season);
+                collection.bulkWrite(update, {}, () => {
+                    resolve();
                 });
+            });
+        });
+    }
+
+    async mongoConnect() {
+        const me = this,
+            env = require("../env.json"),
+            MongoClient = require("mongodb").MongoClient;
+        
+        return new Promise(resolve => {
+            MongoClient.connect(env.mongo, (err, client) => {
+                const db = client.db("personalWizard");
+
+                me.client = client;
+                me.collection = db.collection("tvshows");
 
                 resolve();
             });
         });
+    }
+
+    mongoClose() {
+        const me = this,
+            client = me.client;
+
+        client && client.close();
+
+        me.client = me.collection = null;
     }
 }
 

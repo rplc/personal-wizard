@@ -46,4 +46,7 @@ class TheMovieDB {
     }
 }
 
+const movieDB = new TheMovieDB();
+movieDB.scrape();
+
 module.exports = TheMovieDB;
