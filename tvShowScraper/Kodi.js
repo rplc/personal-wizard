@@ -89,6 +89,15 @@ class Kodi {
 
         me.client = me.collection = null;
     }
+
+    evaluate() {
+        /* TODO
+          - get all entries from mongo (where blacklist is not true)
+          - check if external_data.number_of_seasons > kodi_data.seasons
+            - if kodi.seasons + 1 === external.number_of_seasons => external.seasons.findBy(season_numer === number_of_seasons).air_date != null
+              (number_of_seasons might be already increased but the new season is not yet released)
+        */
+    }
 }
 
 module.exports = Kodi;
