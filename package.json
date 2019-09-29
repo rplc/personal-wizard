@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "mongodb": "^3.3.2",
+    "nodemailer": "^6.3.0",
     "request": "^2.88.0"
   },
   "devDependencies": {},
