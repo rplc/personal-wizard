@@ -40,10 +40,12 @@ class Kodi {
                                     _id: show.tvshowid
                                 },
                                 update: {
-                                    _id: show.tvshowid,
-                                    external_id: show.imdbnumber,
-                                    kodi_scape_ts: Date.now,
-                                    kodi_data: show
+                                    $set: {
+                                        _id: show.tvshowid,
+                                        external_id: show.imdbnumber,
+                                        kodi_scape_ts: Date.now(),
+                                        kodi_data: show
+                                    }
                                 },
                                 upsert: true
                             }
@@ -93,6 +95,3 @@ class Kodi {
 }
 
 module.exports = Kodi;
-
-const kodi = new Kodi();
-kodi.scrapeKodi();

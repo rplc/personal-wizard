@@ -13,18 +13,21 @@ class TheMovieDB {
 
         const collection = me.collection;
         
-        collection.find().toArray(async (error, docs) => {
-            if (error) {
-                console.error(error);
-                return;
-            }
+        return new Promise((resolve) => {
+                collection.find().toArray(async (error, docs) => {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
 
-            for (const entry of docs) {
-                await me.scrapeSingle(entry._id, entry.divergent_external_id || entry.external_id, entry);
-            }
+                for (const entry of docs) {
+                    await me.scrapeSingle(entry._id, entry.divergent_external_id || entry.external_id, entry);
+                }
 
-            console.log(" --- all done, closing mongo");
-            me.mongoClose();
+                console.log(" --- all done, closing mongo");
+                me.mongoClose();
+                resolve();
+            });
         });
     }
 
@@ -68,6 +71,14 @@ class TheMovieDB {
                                 return;
                             }
                             break;
+                        case 504:
+                            // request timed out for an unknown reason; try again
+                            setTimeout(async () => {
+                                await me.scrapeSingle(mongoId, externalId, entry);
+                                resolve();
+                            }, 333);
+                            return;
+                            break;
                     }
 
                     console.error(response.statusCode, error);
@@ -85,7 +96,8 @@ class TheMovieDB {
                         _id: mongoId
                     }, {
                         $set: {
-                            external_data: body
+                            external_data: body,
+                            external_scape_ts: Date.now()
                         }
                     }, {}, () => {
                         // only allowed to fire 40 request per 10 secs, wait a bit until sending next request
@@ -125,7 +137,7 @@ class TheMovieDB {
             return true; // no way to check, hopefully it matches
         }
 
-        if (externalName === kodiData.label) {
+        if (externalName === kodiData.title) {
             if (!externalYear || !kodiData.year) {
                 return true; // no way to check the year
             }
@@ -160,7 +172,7 @@ class TheMovieDB {
         const collection = me.collection;
 
         return new Promise((resolve) => {
-            request.get("https://api.themoviedb.org/3/search/tv/" + encodeURI(kodiData.label) + "?api_key=" + env.tmdbAPI, (error, response, body) => {
+            request.get("https://api.themoviedb.org/3/search/tv/" + encodeURI(kodiData.title) + "?api_key=" + env.tmdbAPI, (error, response, body) => {
                 if (error || response.statusCode != 200) {
                     console.error(error, response.statusCode);
                     resolve();
@@ -227,8 +239,5 @@ class TheMovieDB {
         me.client = me.collection = null;
     }
 }
-
-const movieDB = new TheMovieDB();
-movieDB.scrape();
 
 module.exports = TheMovieDB;
