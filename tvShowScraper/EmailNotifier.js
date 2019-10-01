@@ -36,28 +36,28 @@ async function main() {
 
 function prepareAndSendMail(shows) {
     const mailer = require("nodemailer"),
-        fs = require("fs"),
+        hbs = require("nodemailer-express-handlebars"),
         env = require("../env.json"),
         transporter = mailer.createTransport(env.mailer.smtpConfig);
 
-    let tableBody = "",
-        mailTemplate = fs.readFileSync("tvShowScraper/EmailTemplate.html", "utf8");
-
-    shows.forEach(show => {
-        const summary = show.summary,
-            link = "https://www.themoviedb.org/tv/" + summary.the_movie_db_id,
-            seasons = summary.scraped_seasons  + " of " + summary.aired_seasons;
-
-        tableBody += "<tr><td><a target='_blank' href='" + link + "'>" + summary.title + "</a></td><td>" + seasons + "</td></tr>";
-    });
-
-    mailTemplate = mailTemplate.replace("%TABLE_BODY_PLACEHOLDER%", tableBody);
+    transporter.use("compile", hbs({
+        viewEngine: {
+            partialsDir: "partials",
+            defaultLayout: false
+        },
+        viewPath: "views"
+    }));
 
     transporter.sendMail({
         from: "'Kodi Scraper' <" + env.mailer.smtpConfig.auth.user + ">",
         to: env.mailer.receiver,
         subject: "Outdated Seasons",
-        html: mailTemplate
+        template: "emailSeasonScaper",
+        context: {
+            date: (new Date()).toLocaleString("en-US", {day: "numeric", month: "short", year: "numeric"}),
+            baseURL: "https://www.themoviedb.org/tv/",
+            shows: shows
+        }
     });
 }
 
