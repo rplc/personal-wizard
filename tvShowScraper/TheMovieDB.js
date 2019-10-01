@@ -91,11 +91,18 @@ class TheMovieDB {
                 
                 if (me.checkEntry(body.name, body.first_air_date, entry)) {
                     console.log(entry.kodi_data.title + " (" + mongoId + ";" + externalId + ")", entry.kodi_data.season, body.number_of_seasons);
+
+                    const airedSeasons = body.seasons.filter((season) => {
+                        // season_number 0 are specials -> not interesting, air_date must be set, and in the past
+                        return season.season_number > 0 && season.air_date && new Date(season.air_date) < Date.now();
+                    }).length;
+
                     // seems to be the correct entry
                     collection.updateOne({
                         _id: mongoId
                     }, {
                         $set: {
+                            "summary.aired_seasons": airedSeasons,
                             external_data: body,
                             external_scape_ts: Date.now()
                         }

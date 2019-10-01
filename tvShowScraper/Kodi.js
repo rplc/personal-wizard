@@ -42,6 +42,13 @@ class Kodi {
                                 update: {
                                     $set: {
                                         _id: show.tvshowid,
+                                        summary: {
+                                            kodi_id: show.tvshowid,
+                                            the_movie_db_id: show.imdbnumber,
+                                            title: show.title,
+                                            scraped_seasons: show.season,
+                                            watched: show.playcount
+                                        },
                                         external_id: show.imdbnumber,
                                         kodi_scape_ts: Date.now(),
                                         kodi_data: show
