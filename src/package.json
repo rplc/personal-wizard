@@ -2,8 +2,13 @@
   "name": "personalwizard",
   "version": "1.0.0",
   "description": "## [web-push](https://www.npmjs.com/package/web-push) API - https required!   - how to https on duckDNS (see [https Readme](./httpsReadme.md))",
-  "main": "index.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
   "dependencies": {
+    "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
     "mongodb": "^3.3.2",
     "nodemailer": "^6.3.0",
@@ -11,9 +16,6 @@
     "request": "^2.88.0"
   },
   "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/rplc/personalwizard.git"
