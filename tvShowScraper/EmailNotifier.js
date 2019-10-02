@@ -38,14 +38,15 @@ function prepareAndSendMail(shows) {
     const mailer = require("nodemailer"),
         hbs = require("nodemailer-express-handlebars"),
         env = require("../env.json"),
-        transporter = mailer.createTransport(env.mailer.smtpConfig);
+        transporter = mailer.createTransport(env.mailer.smtpConfig),
+        path = require('path');
 
     transporter.use("compile", hbs({
         viewEngine: {
             partialsDir: "partials",
             defaultLayout: false
         },
-        viewPath: "views"
+        viewPath: path.resolve(__dirname, '../views')
     }));
 
     transporter.sendMail({
