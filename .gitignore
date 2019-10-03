@@ -1,5 +1,4 @@
 node_modules
-mongo
-mongo2
+mongo/data
 env.json
 .vscode

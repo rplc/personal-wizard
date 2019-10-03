@@ -76,8 +76,14 @@ class Kodi {
             env = require("../env.json"),
             MongoClient = require("mongodb").MongoClient;
         
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             MongoClient.connect(env.mongo, (err, client) => {
+                if (err || !client) {
+                    console.error(err);
+                    reject(err);
+                    return;
+                }
+
                 const db = client.db("personalWizard");
 
                 me.client = client;

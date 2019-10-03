@@ -2,6 +2,7 @@ const fs = require('fs'),
     http = require('http'),
     https = require('https'),
     express = require('express'),
+    session = require('express-session'),
     exphbs  = require('express-handlebars'),
     path = require('path'),
     bodyParser = require('body-parser');
@@ -11,33 +12,47 @@ const app = express();
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
-// TODO do i need the trust proxy?
-//app.enable('trust proxy');
+app.enable('trust proxy');
 
-// parse application/json
 app.use(bodyParser.json());
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// routers
+// session midleware
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        //secure: true, //only https
+        maxAge: 600000
+    }
+}));
+
+// middleware that checks if the user is currently logged in or on its way to login page
+app.use((req, res, next) => {
+    if (req.session.user || req.path === '/login') {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+});
+
+// routers must be below the session middleware!!!
 app.use('/', require('./router/index'));
 //app.use('/subscribe', subscribe);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+app.use((req, res, next) => {
+    var err = new Error('Not Found ' + req.path);
     err.status = 404;
     next(err);
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res) => {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,

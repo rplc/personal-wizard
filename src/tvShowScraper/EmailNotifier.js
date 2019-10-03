@@ -10,6 +10,11 @@ async function main() {
     await m.scrape();
 
     MongoClient.connect(env.mongo, (err, client) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+
         const db = client.db("personalWizard"),
             collection = db.collection("tvshows");
 

@@ -8,8 +8,10 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
+    "express-session": "^1.16.2",
     "mongodb": "^3.3.2",
     "nodemailer": "^6.3.0",
     "nodemailer-express-handlebars": "^3.1.0",
