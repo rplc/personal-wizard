@@ -26,6 +26,8 @@ async function main() {
                     $gt: ["$summary.aired_seasons", "$summary.scraped_seasons"]
                 }
             }]
+        }).collation({locale: 'en'}).sort({ // collation en needed for case insensitive sort
+            'summary.title': 1
         }).toArray((error, docs) => {
             if (error) {
                 console.error(error);

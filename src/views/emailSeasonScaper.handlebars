@@ -27,6 +27,7 @@
                         <td><a href="{{../baseURL}}{{this.summary.the_movie_db_id}}" target="_blank">{{this.summary.title}}</a></td>
                         <td>{{this.summary.scraped_seasons}} of {{this.summary.aired_seasons}}</td>
                         <td>{{#if this.summary.watched}}CHECK{{/if}}</td>
+                        <td>{{#if this.summary.in_production}}Running{{else}}Ended{{/if}}</td>
                     </tr>
                 {{/each}}
             </tbody>

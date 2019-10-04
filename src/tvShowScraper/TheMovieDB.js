@@ -103,6 +103,7 @@ class TheMovieDB {
                     }, {
                         $set: {
                             "summary.aired_seasons": airedSeasons,
+                            "summary.in_production": body.in_production,
                             external_data: body,
                             external_scape_ts: Date.now()
                         }
