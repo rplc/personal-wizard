@@ -2,7 +2,6 @@ const fs = require('fs'),
     http = require('http'),
     https = require('https'),
     express = require('express'),
-    session = require('express-session'),
     exphbs  = require('express-handlebars'),
     path = require('path'),
     bodyParser = require('body-parser');
@@ -20,27 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// session midleware
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        //secure: true, //only https
-        maxAge: 600000
-    }
-}));
-
-// middleware that checks if the user is currently logged in or on its way to login page
-app.use((req, res, next) => {
-    if (req.session.user || req.path === '/login') {
-        next();
-    } else {
-        res.redirect('/login');
-    }
-});
-
-// routers must be below the session middleware!!!
+// routers
 app.use('/', require('./router/index'));
 //app.use('/subscribe', subscribe);
 
