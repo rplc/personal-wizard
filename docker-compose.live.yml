@@ -1,0 +1,25 @@
+version: "3.3"
+
+services:
+
+    node:
+        build:
+          context: ./src
+          dockerfile: live.Dockerfile
+        container_name: pers-wiz-node
+        restart: always
+        ports:
+            - "2005:2005"
+            - "2006:2006"
+
+    mongo:
+        build: ./mongo-pi # cannot use official mongo image! (not compatible with rasp pi)
+        container_name: pers-wiz-mongo
+        restart: always
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongo:/data/db
+
+volumes:
+  mongo:

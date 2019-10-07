@@ -3,12 +3,14 @@ version: "3.3"
 services:
 
     node:
-        build: src
+        build: ./src
         container_name: pers-wiz-node
         restart: always
         ports:
             - "80:2005"
             - "443:2006"
+        volumes:
+            - ./src:/opt/personalWizard
 
     mongo:
         image: mongo:bionic

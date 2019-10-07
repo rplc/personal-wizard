@@ -12,6 +12,8 @@ stop_cron_daemon() {
 # start the node project
 cd /opt/personalWizard && npm start &
 
+# change dir to avoid spamming log files
+cd /
 # start cron in foreground mode and using bash to put it in background
 /usr/sbin/crond -f -L15 &
 cron_pid=$!
