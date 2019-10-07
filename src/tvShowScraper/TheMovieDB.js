@@ -24,7 +24,7 @@ class TheMovieDB {
                     await me.scrapeSingle(entry._id, entry.divergent_external_id || entry.external_id, entry);
                 }
 
-                console.log(" --- all done, closing mongo");
+                console.log(' --- all done, closing mongo');
                 me.mongoClose();
                 resolve();
             });
@@ -43,15 +43,15 @@ class TheMovieDB {
     async scrapeSingle(mongoId, externalId, entry) {
         const me = this,
             entryTS = Date.now(),
-            request = require("request"),
-            env = require("../env.json");
+            request = require('request'),
+            env = require('../env');
 
         await me.mongoConnect();
 
         const collection = me.collection;
         
         return new Promise((resolve) => {
-            request.get("https://api.themoviedb.org/3/tv/" + externalId + "?api_key=" + env.tmdbAPI, async (error, response, body) => {
+            request.get('https://api.themoviedb.org/3/tv/' + externalId + '?api_key=' + env.tmdbAPI, async (error, response, body) => {
                 if (error || response.statusCode != 200) {
                     switch(response.statusCode) {
                         case 429:
@@ -90,7 +90,7 @@ class TheMovieDB {
                 body = JSON.parse(body);
                 
                 if (me.checkEntry(body.name, body.first_air_date, entry)) {
-                    console.log(entry.kodi_data.title + " (" + mongoId + ";" + externalId + ")", entry.kodi_data.season, body.number_of_seasons);
+                    console.log(entry.kodi_data.title + ' (' + mongoId + ';' + externalId + ')', entry.kodi_data.season, body.number_of_seasons);
 
                     const airedSeasons = body.seasons.filter((season) => {
                         // season_number 0 are specials -> not interesting, air_date must be set, and in the past
@@ -102,8 +102,8 @@ class TheMovieDB {
                         _id: mongoId
                     }, {
                         $set: {
-                            "summary.aired_seasons": airedSeasons,
-                            "summary.in_production": body.in_production,
+                            'summary.aired_seasons': airedSeasons,
+                            'summary.in_production': body.in_production,
                             external_data: body,
                             external_scape_ts: Date.now()
                         }
@@ -115,7 +115,7 @@ class TheMovieDB {
                     });
                 } else if (entry) {
                     // not the right entry trying to find the correct one by title
-                    console.error(entry.kodi_data.title + " (" + mongoId + ";" + externalId + ")", "external_id is not correct, searching via title");
+                    console.error(entry.kodi_data.title + ' (' + mongoId + ';' + externalId + ')', 'external_id is not correct, searching via title');
                     const newExternalId = await me.findByTitle(mongoId, entry);
 
                     if (newExternalId) {
@@ -123,7 +123,7 @@ class TheMovieDB {
                         resolve();
                     }
                 } else {
-                    console.error(entry.kodi_data.title + " (" + mongoId + ";" + externalId + ")", "external_id is not correct, NO option to find the correct entry");
+                    console.error(entry.kodi_data.title + ' (' + mongoId + ';' + externalId + ')', 'external_id is not correct, NO option to find the correct entry');
                 }
             });
         });
@@ -167,8 +167,8 @@ class TheMovieDB {
     async findByTitle(mongoId, entry) {
         const me = this,
             entryTS = Date.now(),
-            request = require("request"),
-            env = require("../env.json"),
+            request = require('request'),
+            env = require('../env'),
             kodiData = entry && entry.kodi_data;
         
         if (!kodiData) {
@@ -180,7 +180,7 @@ class TheMovieDB {
         const collection = me.collection;
 
         return new Promise((resolve) => {
-            request.get("https://api.themoviedb.org/3/search/tv/" + encodeURI(kodiData.title) + "?api_key=" + env.tmdbAPI, (error, response, body) => {
+            request.get('https://api.themoviedb.org/3/search/tv/' + encodeURI(kodiData.title) + '?api_key=' + env.tmdbAPI, (error, response, body) => {
                 if (error || response.statusCode != 200) {
                     console.error(error, response.statusCode);
                     resolve();
@@ -216,8 +216,8 @@ class TheMovieDB {
      */
     async mongoConnect() {
         const me = this,
-            env = require("../env.json"),
-            MongoClient = require("mongodb").MongoClient;
+            env = require('../env'),
+            MongoClient = require('mongodb').MongoClient;
         
         if (me.client && me.collection) {
             return true;
@@ -225,10 +225,10 @@ class TheMovieDB {
         
         return new Promise(resolve => {
             MongoClient.connect(env.mongo, (err, client) => {
-                const db = client.db("personalWizard");
+                const db = client.db('personalWizard');
 
                 me.client = client;
-                me.collection = db.collection("tvshows");
+                me.collection = db.collection('tvshows');
 
                 resolve();
             });

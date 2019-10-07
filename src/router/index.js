@@ -1,7 +1,7 @@
 const express = require('express'),
     router = express.Router(),
-    MongoClient = require("mongodb").MongoClient,
-    env = require("../env.json");
+    MongoClient = require('mongodb').MongoClient,
+    env = require('../env');
 
 router.get('/', (req, res) => {
     res.render('home');

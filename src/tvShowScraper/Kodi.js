@@ -8,20 +8,20 @@ class Kodi {
      */
     async scrapeKodi() {
         const me = this,
-            request = require("request"),
-            env = require("../env.json");
+            request = require('request'),
+            env = require('../env');
 
         await me.mongoConnect();
 
         return new Promise(resolve => {
-            request.post(env.kodi + "/jsonrpc", {
+            request.post(env.kodi + '/jsonrpc', {
                 json: {
-                    jsonrpc: "2.0",
-                    method: "VideoLibrary.GetTVShows",
+                    jsonrpc: '2.0',
+                    method: 'VideoLibrary.GetTVShows',
                     params: {
-                        properties: ["title", "year", "imdbnumber", "playcount", "season"]
+                        properties: ['title', 'year', 'imdbnumber', 'playcount', 'season']
                     },
-                    id: "libTvShows"
+                    id: 'libTvShows'
                 }
             }, (error, response, body) => {
                 if (error) {
@@ -60,7 +60,7 @@ class Kodi {
                     });
 
                 collection.bulkWrite(bulkUpdate, {}, () => {
-                    console.log("Kodi scrape complete; update done.")
+                    console.log('Kodi scrape complete; update done.')
                     me.mongoClose();
                     resolve();
                 });
@@ -73,8 +73,8 @@ class Kodi {
      */
     async mongoConnect() {
         const me = this,
-            env = require("../env.json"),
-            MongoClient = require("mongodb").MongoClient;
+            env = require('../env'),
+            MongoClient = require('mongodb').MongoClient;
         
         return new Promise((resolve, reject) => {
             MongoClient.connect(env.mongo, (err, client) => {
@@ -84,10 +84,10 @@ class Kodi {
                     return;
                 }
 
-                const db = client.db("personalWizard");
+                const db = client.db('personalWizard');
 
                 me.client = client;
-                me.collection = db.collection("tvshows");
+                me.collection = db.collection('tvshows');
 
                 resolve();
             });
