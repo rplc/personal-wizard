@@ -4,7 +4,14 @@ const fs = require('fs'),
     express = require('express'),
     exphbs  = require('express-handlebars'),
     path = require('path'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    env = require('./env'),
+    mongoose = require('mongoose');
+
+mongoose.Promise = global.Promise;
+mongoose.connect(env.mongo, {
+    useNewUrlParser: true
+}).catch(err => console.error(err));
 
 const app = express();
 
@@ -21,7 +28,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // routers
 app.use('/', require('./router/index'));
-//app.use('/subscribe', subscribe);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

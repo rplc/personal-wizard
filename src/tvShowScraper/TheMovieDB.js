@@ -7,16 +7,15 @@ class TheMovieDB {
      * Gets the gathered tv shows from mongo and trys to find matching entries on TheMovieDB.
      */
     async scrape() {
-        const me = this;
+        const me = this,
+            TvShow = require('../model/TvShow');
 
         await me.mongoConnect();
-
-        const collection = me.collection;
         
         return new Promise((resolve) => {
-                collection.find().toArray(async (error, docs) => {
-                if (error) {
-                    console.error(error);
+            TvShow.find({}, null, {}, async (err, docs) => {
+                if (err) {
+                    console.error(err);
                     return;
                 }
 
@@ -44,11 +43,10 @@ class TheMovieDB {
         const me = this,
             entryTS = Date.now(),
             request = require('request'),
+            TvShow = require('../model/TvShow'),
             env = require('../env');
 
         await me.mongoConnect();
-
-        const collection = me.collection;
         
         return new Promise((resolve) => {
             request.get('https://api.themoviedb.org/3/tv/' + externalId + '?api_key=' + env.tmdbAPI, async (error, response, body) => {
@@ -94,11 +92,11 @@ class TheMovieDB {
 
                     const airedSeasons = body.seasons.filter((season) => {
                         // season_number 0 are specials -> not interesting, air_date must be set, and in the past
-                        return season.season_number > 0 && season.air_date && new Date(season.air_date) < Date.now();
+                        return season.season_number > 0 && season.air_date && new Date(season.air_date) < new Date();
                     }).length;
 
                     // seems to be the correct entry
-                    collection.updateOne({
+                    TvShow.updateOne({
                         _id: mongoId
                     }, {
                         $set: {
@@ -169,6 +167,7 @@ class TheMovieDB {
             entryTS = Date.now(),
             request = require('request'),
             env = require('../env'),
+            TvShow = require('../model/TvShow'),
             kodiData = entry && entry.kodi_data;
         
         if (!kodiData) {
@@ -176,8 +175,6 @@ class TheMovieDB {
         }
 
         await me.mongoConnect();
-
-        const collection = me.collection;
 
         return new Promise((resolve) => {
             request.get('https://api.themoviedb.org/3/search/tv/' + encodeURI(kodiData.title) + '?api_key=' + env.tmdbAPI, (error, response, body) => {
@@ -191,7 +188,7 @@ class TheMovieDB {
                 
                 body.results.every(res => {
                     if (me.checkEntry(res.name, res.first_air_date, entry)) {
-                        collection.updateOne({
+                        TvShow.updateOne({
                                 _id: mongoId
                             }, {
                                 $set: {
@@ -215,36 +212,23 @@ class TheMovieDB {
      * Connects to mongo and sets this.client and this.collection
      */
     async mongoConnect() {
-        const me = this,
-            env = require('../env'),
-            MongoClient = require('mongodb').MongoClient;
-        
-        if (me.client && me.collection) {
-            return true;
-        }
-        
-        return new Promise(resolve => {
-            MongoClient.connect(env.mongo, (err, client) => {
-                const db = client.db('personalWizard');
+        const env = require('../env'),
+            mongoose = require('mongoose');
 
-                me.client = client;
-                me.collection = db.collection('tvshows');
+        mongoose.Promise = global.Promise;
 
-                resolve();
-            });
-        });
+        return mongoose.connect(env.mongo, {
+            useNewUrlParser: true
+        }).catch(err => console.error(err));
     }
 
     /**
      * Closes mongo connection and removes this.client and this.connection
      */
     mongoClose() {
-        const me = this,
-            client = me.client;
+        const mongoose = require('mongoose');
 
-        client && client.close();
-
-        me.client = me.collection = null;
+        mongoose.disconnect();
     }
 }
 

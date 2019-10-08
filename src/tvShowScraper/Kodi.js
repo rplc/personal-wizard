@@ -9,11 +9,12 @@ class Kodi {
     async scrapeKodi() {
         const me = this,
             request = require('request'),
-            env = require('../env');
+            env = require('../env'),
+            TvShow = require('../model/TvShow');
 
         await me.mongoConnect();
 
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             request.post(env.kodi + '/jsonrpc', {
                 json: {
                     jsonrpc: '2.0',
@@ -30,8 +31,7 @@ class Kodi {
                     return;
                 }
                 
-                const collection = me.collection,
-                    result = body.result,
+                const result = body.result,
                     tvshows = result && result.tvshows || [],
                     bulkUpdate = tvshows.map((show) => {
                         return {
@@ -59,8 +59,15 @@ class Kodi {
                         }
                     });
 
-                collection.bulkWrite(bulkUpdate, {}, () => {
-                    console.log('Kodi scrape complete; update done.')
+                TvShow.bulkWrite(bulkUpdate, {}, (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        me.mongoClose();
+                        reject();
+                        return;
+                    }
+
+                    console.log('Kodi scrape complete; update done.');
                     me.mongoClose();
                     resolve();
                 });
@@ -72,38 +79,23 @@ class Kodi {
      * Connects to mongo and sets this.client and this.collection
      */
     async mongoConnect() {
-        const me = this,
-            env = require('../env'),
-            MongoClient = require('mongodb').MongoClient;
-        
-        return new Promise((resolve, reject) => {
-            MongoClient.connect(env.mongo, (err, client) => {
-                if (err || !client) {
-                    console.error(err);
-                    reject(err);
-                    return;
-                }
+        const env = require('../env'),
+            mongoose = require('mongoose');
 
-                const db = client.db('personalWizard');
+        mongoose.Promise = global.Promise;
 
-                me.client = client;
-                me.collection = db.collection('tvshows');
-
-                resolve();
-            });
-        });
+        return mongoose.connect(env.mongo, {
+            useNewUrlParser: true
+        }).catch(err => console.error(err));
     }
 
     /**
      * Closes mongo connection and removes this.client and this.connection
      */
     mongoClose() {
-        const me = this,
-            client = me.client;
+        const mongoose = require('mongoose');
 
-        client && client.close();
-
-        me.client = me.collection = null;
+        mongoose.disconnect();
     }
 }
 

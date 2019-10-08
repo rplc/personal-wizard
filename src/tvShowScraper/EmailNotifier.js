@@ -1,43 +1,45 @@
 async function main() {
-    const MongoClient = require('mongodb').MongoClient,
-        Kodi = require('./Kodi.js'),
+    const Kodi = require('./Kodi.js'),
         k = new Kodi(),
         TheMovieDB = require('./TheMovieDB.js'),
         m = new TheMovieDB(),
-        env = require('../env');
+        env = require('../env'),
+        mongoose = require('mongoose'),
+        TvShow = require('../model/TvShow');
 
     await k.scrapeKodi();
     await m.scrape();
 
-    MongoClient.connect(env.mongo, (err, client) => {
-        if (err) {
-            console.error(err);
+    mongoose.Promise = global.Promise;
+    mongoose.connect(env.mongo, {
+        useNewUrlParser: true
+    }).catch(err => console.error(err));
+
+    TvShow.find({
+        $and: [{
+            blacklist: {$ne: true}
+        }, {
+            $expr: {
+                $gt: ['$summary.aired_seasons', '$summary.scraped_seasons']
+            }
+        }]
+    }, null, {
+        // collation en needed for case insensitive sort
+        collation: {
+            locale: 'en'
+        },
+        sort: {
+            'summary.title': 1
+        }
+    }, (error, docs) => {
+        if (error) {
+            console.error(error);
             return;
         }
 
-        const db = client.db('personalWizard'),
-            collection = db.collection('tvshows');
+        mongoose.disconnect();
 
-        collection.find({
-            $and: [{
-                blacklist: {$ne: true}
-            }, {
-                $expr: {
-                    $gt: ['$summary.aired_seasons', '$summary.scraped_seasons']
-                }
-            }]
-        }).collation({locale: 'en'}).sort({ // collation en needed for case insensitive sort
-            'summary.title': 1
-        }).toArray((error, docs) => {
-            if (error) {
-                console.error(error);
-                return;
-            }
-
-            client.close();
-
-            prepareAndSendMail(docs);
-        });
+        prepareAndSendMail(docs);
     });
 }
 
