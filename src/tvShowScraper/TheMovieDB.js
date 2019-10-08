@@ -9,8 +9,6 @@ class TheMovieDB {
     async scrape() {
         const me = this,
             TvShow = require('../model/TvShow');
-
-        await me.mongoConnect();
         
         return new Promise((resolve, reject) => {
             TvShow.find({}, null, {}, async (err, docs) => {
@@ -25,7 +23,6 @@ class TheMovieDB {
                 }
 
                 console.log(' --- all done, closing mongo');
-                me.mongoClose();
                 resolve();
             });
         });
@@ -46,8 +43,6 @@ class TheMovieDB {
             request = require('request'),
             TvShow = require('../model/TvShow'),
             env = require('../env');
-
-        await me.mongoConnect();
         
         return new Promise((resolve) => {
             request.get('https://api.themoviedb.org/3/tv/' + externalId + '?api_key=' + env.tmdbAPI, async (error, response, body) => {
@@ -175,8 +170,6 @@ class TheMovieDB {
             return false;
         }
 
-        await me.mongoConnect();
-
         return new Promise((resolve) => {
             request.get('https://api.themoviedb.org/3/search/tv/' + encodeURI(kodiData.title) + '?api_key=' + env.tmdbAPI, (error, response, body) => {
                 if (error || response.statusCode != 200) {
@@ -207,27 +200,6 @@ class TheMovieDB {
                 });
             });
         });
-    }
-
-    /**
-     * Connects to mongo
-     */
-    async mongoConnect() {
-        const env = require('../env'),
-            mongoose = require('mongoose');
-
-        mongoose.Promise = global.Promise;
-
-        return mongoose.connect(env.mongo, {
-            useNewUrlParser: true
-        }).catch(err => console.error(err));
-    }
-
-    /**
-     * Closes mongo connection
-     */
-    mongoClose() {
-        require('mongoose').disconnect();
     }
 }
 

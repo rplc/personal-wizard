@@ -7,13 +7,13 @@ async function main() {
         mongoose = require('mongoose'),
         TvShow = require('../model/TvShow');
 
-    await k.scrapeKodi();
-    await m.scrape();
-
     mongoose.Promise = global.Promise;
     mongoose.connect(env.mongo, {
         useNewUrlParser: true
     }).catch(err => console.error(err));
+
+    await k.scrapeKodi();
+    await m.scrape();
 
     TvShow.find({
         $and: [{

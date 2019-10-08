@@ -12,8 +12,6 @@ class Kodi {
             env = require('../env'),
             TvShow = require('../model/TvShow');
 
-        await me.mongoConnect();
-
         return new Promise((resolve, reject) => {
             request.post(env.kodi + '/jsonrpc', {
                 json: {
@@ -27,7 +25,6 @@ class Kodi {
             }, (error, response, body) => {
                 if (error) {
                     console.error(error);
-                    me.mongoClose();
                     return;
                 }
                 
@@ -62,38 +59,15 @@ class Kodi {
                 TvShow.bulkWrite(bulkUpdate, {}, (err, result) => {
                     if (err) {
                         console.error(err);
-                        me.mongoClose();
                         reject();
                         return;
                     }
 
                     console.log('Kodi scrape complete; update done.');
-                    me.mongoClose();
                     resolve();
                 });
             });
         });
-    }
-
-    /**
-     * Connects to mongo
-     */
-    async mongoConnect() {
-        const env = require('../env'),
-            mongoose = require('mongoose');
-
-        mongoose.Promise = global.Promise;
-
-        return mongoose.connect(env.mongo, {
-            useNewUrlParser: true
-        }).catch(err => console.error(err));
-    }
-
-    /**
-     * Closes mongo connection
-     */
-    mongoClose() {
-        require('mongoose').disconnect();
     }
 }
 
