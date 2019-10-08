@@ -76,7 +76,7 @@ class Kodi {
     }
 
     /**
-     * Connects to mongo and sets this.client and this.collection
+     * Connects to mongo
      */
     async mongoConnect() {
         const env = require('../env'),
@@ -90,12 +90,10 @@ class Kodi {
     }
 
     /**
-     * Closes mongo connection and removes this.client and this.connection
+     * Closes mongo connection
      */
     mongoClose() {
-        const mongoose = require('mongoose');
-
-        mongoose.disconnect();
+        require('mongoose').disconnect();
     }
 }
 

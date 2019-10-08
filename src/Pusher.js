@@ -1,4 +1,13 @@
 class Pusher {
+    /**
+     * Sends a push notification to all registered clients with the given payload.
+     * 
+     * @param {Object} payload The payload to send.
+     * @param {String} payload.title The notification title.
+     * @param {String} payload.message The notification message/body of the notification.
+     * @param {String} payload.icon The notification icon to show.
+     * @param {String} payload.tag The notification tag.
+     */
     async sendNotification(payload) {
         const me = this,
             Subscription = require('./model/WPSubscription'),
@@ -8,9 +17,10 @@ class Pusher {
         await me.mongoConnect();
 
         Subscription.find({}, null, {}, (err, docs) => {
+            me.mongoClose();
+
             if (err) {
                 console.error(err);
-                reject();
                 return;
             }
 
@@ -37,15 +47,14 @@ class Pusher {
                     pushSubscription,
                     pushPayload,
                     pushOptions
-                ).catch((err) => {
-                    console.error(`Failed to send notification to ${sub.endpoint}`, err);
-                });
+                ).catch(err => console.error(`Failed to send ${err.statusCode} (${err.message})`));
             }
-
-            me.mongoClose();
         });
     }
 
+    /**
+     * Connects to mongo
+     */
     async mongoConnect() {
         const env = require('./env'),
             mongoose = require('mongoose');
@@ -57,10 +66,11 @@ class Pusher {
         }).catch(err => console.error(err));
     }
 
+    /**
+     * Closes mongo connection
+     */
     mongoClose() {
-        const mongoose = require('mongoose');
-
-        mongoose.disconnect();
+        require('mongoose').disconnect();
     }
 }
 
