@@ -1,6 +1,64 @@
 <h1>Example App: Home</h1>
 
 <script>
-    var vapidPubKey = "{{vapidPubKey}}";
-    console.log(vapidPubKey);
+    function urlB64ToUint8Array(base64String) {
+        // need to convert the pub key into Uint8Array, see web-push docs
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/\-/g, '+')
+            .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    async function saveSubscription(subscription) {
+        const response = await fetch('/subscribe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(subscription)
+        });
+
+        if (response.status !== 200 && response.status !== 304) {
+            console.error(`HTTP error while saving subscription: ${response.status}`);
+        }
+    }
+
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+        navigator.serviceWorker.register('js/worker.js')
+            .then(swRegistration => {
+
+                swRegistration.pushManager.getSubscription()
+                    .then(subscription => {
+                        if (subscription) {
+                            return;
+                        }
+
+                        swRegistration.pushManager.subscribe({
+                                userVisibleOnly: true,
+                                applicationServerKey: urlB64ToUint8Array("{{vapidPubKey}}")
+                            })
+                            .then(subscription => {
+                                console.log(subscription);
+
+                                saveSubscription(subscription);
+                            })
+                            .catch(err => {
+                                console.log('Failed to subscribe user: ', err);
+                            });
+                    });
+            })
+            .catch(error => {
+                console.error('Service Worker Error', error);
+            });
+    } else {
+        console.warn('Push messaging is not supported');
+    }
 </script>
