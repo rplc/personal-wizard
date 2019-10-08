@@ -12,10 +12,11 @@ class TheMovieDB {
 
         await me.mongoConnect();
         
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             TvShow.find({}, null, {}, async (err, docs) => {
                 if (err) {
                     console.error(err);
+                    reject();
                     return;
                 }
 
