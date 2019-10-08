@@ -1,0 +1,3 @@
+#!/bin/sh
+
+certbot renew --pre-hook "service persWizPublic stop" --post-hook "service persWizPublic start"

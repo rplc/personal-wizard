@@ -15,6 +15,7 @@ mongoose.connect(env.mongo, {
 
 const app = express();
 
+app.set('views', __dirname + '/views');
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
