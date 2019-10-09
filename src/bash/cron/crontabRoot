@@ -2,5 +2,6 @@
 */15    *       *       *       *       root        run-parts /etc/periodic/15min
 0       *       *       *       *       root        run-parts /etc/periodic/hourly
 0       2       *       *       *       root        run-parts /etc/periodic/daily
+0       18      *       *       *       root        run-parts /etc/periodic/daily18
 0       3       *       *       6       root        run-parts /etc/periodic/weekly
 0       5       1       *       *       root        run-parts /etc/periodic/monthly

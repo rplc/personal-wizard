@@ -1,0 +1,3 @@
+#!/bin/sh
+
+node /opt/personalWizard/util/weather/EveningTempAlert.js

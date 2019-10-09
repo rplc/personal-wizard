@@ -7,8 +7,7 @@ class Kodi {
      * Scrapes code via the json rpc and updates the mongo db.
      */
     async scrapeKodi() {
-        const me = this,
-            request = require('request'),
+        const request = require('request'),
             env = require('../../env'),
             TvShow = require('../../model/TvShow');
 

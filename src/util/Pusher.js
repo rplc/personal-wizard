@@ -11,7 +11,9 @@ class Pusher {
     async sendNotification(payload) {
         const Subscription = require('../model/WPSubscription'),
             webPush = require('web-push'),
-            env = require('../env');
+            env = require('../env');        
+
+        payload.icon = payload.icon || 'https://myocto.duckdns.org/img/personalWizard_512.png';
 
         return new Promise((resolve, reject) => {
             Subscription.find({}, null, {}, (err, docs) => {
@@ -32,7 +34,7 @@ class Pusher {
                         pushPayload = JSON.stringify(payload),
                         pushOptions = {
                             vapidDetails: {
-                                subject: 'http://example.com',
+                                subject: 'https://myocto.duckdns.org',
                                 privateKey: env.vapid.privateKey,
                                 publicKey: env.vapid.publicKey
                             },
