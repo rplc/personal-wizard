@@ -11,7 +11,7 @@
 ### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
-DAEMON_ARGS="/opt/personalWizard/publicServer.js" 
+DAEMON_ARGS="/opt/personalWizard/serverPublic/server.js" 
 DESC="personalWizard public server service"
 NODEUSER=root:root
 LOCAL_VAR_RUN=/var/run

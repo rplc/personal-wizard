@@ -3,9 +3,9 @@ async function main() {
         k = new Kodi(),
         TheMovieDB = require('./TheMovieDB.js'),
         m = new TheMovieDB(),
-        env = require('../env'),
+        env = require('../../env'),
         mongoose = require('mongoose'),
-        TvShow = require('../model/TvShow');
+        TvShow = require('../../model/TvShow');
 
     mongoose.Promise = global.Promise;
     mongoose.connect(env.mongo, {
@@ -46,7 +46,7 @@ async function main() {
 function prepareAndSendMail(shows) {
     const mailer = require('nodemailer'),
         hbs = require('nodemailer-express-handlebars'),
-        env = require('../env'),
+        env = require('../../env'),
         transporter = mailer.createTransport(env.mailer.smtpConfig),
         path = require('path');
 
@@ -55,14 +55,14 @@ function prepareAndSendMail(shows) {
             partialsDir: 'partials',
             defaultLayout: false
         },
-        viewPath: path.resolve(__dirname, '../views')
+        viewPath: path.resolve(__dirname, '../../mailTemplates')
     }));
 
     transporter.sendMail({
         from: '\'Kodi Scraper\' <' + env.mailer.smtpConfig.auth.user + '>',
         to: env.mailer.receiver,
         subject: 'Outdated Seasons',
-        template: 'mails/emailSeasonScaper',
+        template: 'seasonScaper',
         context: {
             date: (new Date()).toLocaleString('en-US', {day: 'numeric', month: 'short', year: 'numeric'}),
             baseURL: 'https://www.themoviedb.org/tv/',

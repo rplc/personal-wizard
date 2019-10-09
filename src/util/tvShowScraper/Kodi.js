@@ -9,8 +9,8 @@ class Kodi {
     async scrapeKodi() {
         const me = this,
             request = require('request'),
-            env = require('../env'),
-            TvShow = require('../model/TvShow');
+            env = require('../../env'),
+            TvShow = require('../../model/TvShow');
 
         return new Promise((resolve, reject) => {
             request.post(env.kodi + '/jsonrpc', {

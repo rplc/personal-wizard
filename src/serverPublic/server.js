@@ -5,8 +5,9 @@ const fs = require('fs'),
     exphbs  = require('express-handlebars'),
     path = require('path'),
     bodyParser = require('body-parser'),
-    env = require('./env'),
-    mongoose = require('mongoose');
+    env = require('../env'),
+    mongoose = require('mongoose'),
+    WPSubscription = require('../model/WPSubscription');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(env.mongo, {
@@ -15,7 +16,7 @@ mongoose.connect(env.mongo, {
 
 const app = express();
 
-app.set('views', __dirname + '/views');
+app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
@@ -28,7 +29,27 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routers
-app.use('/', require('./router/index'));
+app.get('/', (req, res) => {
+    res.render('home', {
+        vapidPubKey: env.vapid.publicKey
+    });
+});
+
+app.post('/subscribe', async (req, res) => {
+    const subscriptionModel = new WPSubscription(req.body);
+    await subscriptionModel.save((err, subscription) => {
+        if (err) {
+            console.error(`Error occurred while saving subscription. Err: ${err}`);
+            res.status(500).json({
+                error: 'Technical error occurred'
+            });
+        } else {
+            res.json({
+                data: 'Subscription saved.'
+            });
+        }
+    });
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -46,12 +67,12 @@ app.use((err, req, res) => {
     });
 });
 
-const httpServer = http.createServer(app);
-    /*httpsServer = https.createServer({
+const httpServer = http.createServer(app),
+    httpsServer = https.createServer({
         key: fs.readFileSync('/etc/letsencrypt/live/myocto.duckdns.org/privkey.pem', 'utf8'),
         cert: fs.readFileSync('/etc/letsencrypt/live/myocto.duckdns.org/cert.pem', 'utf8'),
         ca: fs.readFileSync('/etc/letsencrypt/live/myocto.duckdns.org/chain.pem', 'utf8')
-    }, app);*/
+    }, app);
 
 httpServer.listen(2005);
-//httpsServer.listen(2006);
+httpsServer.listen(2006);

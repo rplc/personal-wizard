@@ -8,7 +8,7 @@ class TheMovieDB {
      */
     async scrape() {
         const me = this,
-            TvShow = require('../model/TvShow');
+            TvShow = require('../../model/TvShow');
         
         return new Promise((resolve, reject) => {
             TvShow.find({}, null, {}, async (err, docs) => {
@@ -41,8 +41,8 @@ class TheMovieDB {
         const me = this,
             entryTS = Date.now(),
             request = require('request'),
-            TvShow = require('../model/TvShow'),
-            env = require('../env');
+            TvShow = require('../../model/TvShow'),
+            env = require('../../env');
         
         return new Promise((resolve) => {
             request.get('https://api.themoviedb.org/3/tv/' + externalId + '?api_key=' + env.tmdbAPI, async (error, response, body) => {
@@ -162,8 +162,8 @@ class TheMovieDB {
         const me = this,
             entryTS = Date.now(),
             request = require('request'),
-            env = require('../env'),
-            TvShow = require('../model/TvShow'),
+            env = require('../../env'),
+            TvShow = require('../../model/TvShow'),
             kodiData = entry && entry.kodi_data;
         
         if (!kodiData) {

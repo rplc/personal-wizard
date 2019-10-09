@@ -2,3 +2,4 @@ node_modules
 mongo/
 env.js
 .vscode
+src/certs/*.pem

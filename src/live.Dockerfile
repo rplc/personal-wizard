@@ -10,6 +10,8 @@ COPY bash/entry.sh /entry.sh
 
 COPY bash/services /etc/init.d
 
+COPY certs /etc/letsencrypt/live/myocto.duckdns.org
+
 WORKDIR /opt/personalWizard
 COPY . /opt/personalWizard
 
