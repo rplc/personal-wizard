@@ -3,7 +3,7 @@ version: "3.3"
 services:
 
     mongo:
-        build: ./mongo-pi # cannot use official mongo image! (not compatible with rasp pi)
+        image: andresvidal/rpi3-mongodb3 # cannot use official mongo image! (no arm/v7 image provided -> need to create my own)
         container_name: pers-wiz-mongo
         restart: always
         ports:

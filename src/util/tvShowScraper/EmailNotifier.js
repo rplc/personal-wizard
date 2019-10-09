@@ -19,9 +19,7 @@ async function main() {
         $and: [{
             blacklist: {$ne: true}
         }, {
-            $expr: {
-                $gt: ['$summary.aired_seasons', '$summary.scraped_seasons']
-            }
+            $where: "this.summary.aired_seasons > this.summary.scraped_seasons"
         }]
     }, null, {
         // collation en needed for case insensitive sort

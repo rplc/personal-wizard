@@ -9,7 +9,7 @@
                 margin-top: 15px;
             }
             .icon {
-                height: 15px;
+                height: 25px;
             }
         </style>
     </head>
@@ -32,14 +32,14 @@
                         <td>
                             {{! Need to be fucking png images. External fonts (e.g. Font Awesome) will not be included (gmail simply ignores them), cannot embed base64 images (gmail ignores them) }}
                             {{#if this.summary.watched}}
-                                <img src="https://myocto.duckdns.org/img/watched.jpg" title="Watched" alt="Watched" class="icon">
+                                <img src="https://myocto.duckdns.org/img/watched.png" title="Watched" alt="Watched" class="icon">
                             {{else}}
-                                <img src="https://myocto.duckdns.org/img/unwatched.jpg" title="Not (completely) watched" alt="Not (completely) watched" class="icon">
+                                <img src="https://myocto.duckdns.org/img/unwatched.png" title="Not (completely) watched" alt="Not (completely) watched" class="icon">
                             {{/if}}
                             {{#if this.summary.in_production}}
-                                <img src="https://myocto.duckdns.org/img/running.jpg" title="In production" alt="In production" class="icon">
+                                <img src="https://myocto.duckdns.org/img/running.png" title="In production" alt="In production" class="icon">
                             {{else}}
-                                <img src="https://myocto.duckdns.org/img/runningBan.jpg" title="Dropped" alt="Dropped" class="icon">
+                                <img src="https://myocto.duckdns.org/img/runningBan.png" title="Dropped" alt="Dropped" class="icon">
                             {{/if}}
                         </td>
                     </tr>

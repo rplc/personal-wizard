@@ -3,7 +3,7 @@ version: "3.3"
 services:
 
     mongo:
-        image: mongo:bionic
+        image: mongo:3.4 # stay on the same major version as pi mongo docker
         container_name: pers-wiz-mongo
         restart: always
         ports:
