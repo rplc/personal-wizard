@@ -4,8 +4,10 @@
 `mongod --dbpath=./mongo`
 
 ## [web-push](https://www.npmjs.com/package/web-push) API
-- https required!
+- https required for registration
   - how to https on duckDNS (see [https Readme](./httpsReadme.md))
+- Caution: Browser must be running to receive the push notification
+  - only exception: Chrome on Android (will receive the notifications even if closed)
 
 ## Media Watcher
 - Kodi JSON RCP

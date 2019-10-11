@@ -6,7 +6,7 @@ class DarkSky {
 
         return new Promise((resolve, reject) => {
             request.get({
-                url: `https://api.darksky.net/forecast/${darksky.api}/${darksky.latitude},${darksky.longitude}?units=si`,
+                url: `https://api.darksky.net/forecast/${darksky.api}/${darksky.latitude},${darksky.longitude}?units=si&exclude=minutely,daily`,
                 json: true
             }, (err, response, body) => {
                 if (err) {

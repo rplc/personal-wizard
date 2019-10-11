@@ -1,6 +1,7 @@
 async function main() {
     const mongoose = require('mongoose'),
-        env = require('../env'),DarkSky = require('./DarkSky'),
+        env = require('../../env'),
+        DarkSky = require('./DarkSky'),
         Pusher = require('../Pusher'),
         d = new DarkSky(),
         weather = await d.getWeather(),
@@ -12,6 +13,7 @@ async function main() {
     }).catch(err => console.error(err));
 
     const lowTemp = getNightLow(weather);
+    console.log(`night low temp of ${lowTemp}°C`);
     if (lowTemp < -2) {
         p.sendNotification({
             title: 'Es wird kalt!',
@@ -20,6 +22,7 @@ async function main() {
     }
     
     const highTemp = getDailyHigh(weather);
+    console.log(`day high temp of ${highTemp}°C`);
     if (highTemp < 20) {
         p.sendNotification({
             title: 'Es wird warm...',
