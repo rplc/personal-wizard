@@ -4,5 +4,6 @@
 0       *       *       *       *       run-parts /etc/periodic/hourly
 0       2       *       *       *       run-parts /etc/periodic/daily
 0       18      *       *       *       run-parts /etc/periodic/daily18
+0       12      *       *       *       run-parts /etc/periodic/daily12
 0       3       *       *       6       run-parts /etc/periodic/weekly
 0       5       1       *       *       run-parts /etc/periodic/monthly
