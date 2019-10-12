@@ -1,4 +1,46 @@
-<h1>Example App: Home</h1>
+<img src="img/personalWizard_512.png" class="wizard-tl">
+<img src="img/personalWizard_512.png" class="wizard-tr">
+
+<style>
+    .wizard-tl {
+        width: 200px;
+        position: absolute;
+        animation: screensaver-tl 4s infinite;
+    }
+    .wizard-tr {
+        width: 200px;
+        position: absolute;
+        animation: screensaver-tr 4s infinite;
+    }
+    @keyframes screensaver-tl {
+        0% {
+            top: 0;
+            left: 0;
+        }
+        50% {
+            top: calc(100vh - 200px);
+            left: calc(100vw - 200px);
+        }
+        100% {
+            top: 0;
+            left: 0;
+        }
+    }
+    @keyframes screensaver-tr {
+        0% {
+            top: 0;
+            left: calc(100vw - 200px);
+        }
+        50% {
+            top: calc(100vh - 200px);
+            left: 0;
+        }
+        100% {
+            top: 0;
+            left: calc(100vw - 200px);
+        }
+    }
+</style>
 
 <script>
     function urlB64ToUint8Array(base64String) {

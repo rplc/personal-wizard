@@ -22,6 +22,7 @@
 ## Traffic Alerts
 - daily(?) roadworks alert
 - alerts around commute times for congestions
+- **not going to happen** Google Maps/Routes API costs, no free alternative, mdm-portal of germany is useless
 
 ## Weather Alerts
 - datasources:
