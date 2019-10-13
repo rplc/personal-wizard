@@ -12,9 +12,11 @@ async function main() {
         useNewUrlParser: true
     }).catch(err => console.error(err));
 
-    const rain = getRainStatus(weather);
+    const settings = await require('../../model/Settings').getSetting(),
+        walkingTime = settings.walking_time_alert,
+        rain = getRainStatus(weather);
 
-    if (rain) {
+    if (rain && rain.intensity >= walkingTime.intensity && rain.probability >= walkingTime.probability) {
         console.log(`${new Date().toDateString()}: Intensity: ${rain.intensity}mm/h, probability: ${rain.probability}%`);
         p.sendNotification({
             title: 'Beim Gassi könnte es regnen',

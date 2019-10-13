@@ -2,10 +2,10 @@
   "name": "personalwizard",
   "version": "1.0.0",
   "description": "## [web-push](https://www.npmjs.com/package/web-push) API - https required!   - how to https on duckDNS (see [https Readme](./httpsReadme.md))",
-  "main": "app.js",
+  "main": "serverLocal/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node serverLocal/server.js"
   },
   "dependencies": {
     "express": "^4.17.1",

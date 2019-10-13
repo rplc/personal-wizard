@@ -43,3 +43,6 @@
 ## [Cron Jobs](https://www.npmjs.com/package/cron)
 - for the media watcher, traffic/weather alerts(?)
 - certificate renewal
+
+## Binary Clock control
+- save schedules and activate one (holiday, work, ...)

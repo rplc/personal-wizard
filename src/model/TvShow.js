@@ -30,6 +30,4 @@ const tvShowSchema = new Schema({
     external_scape_ts: Date
 });
 
-const TvShow = mongoose.model('TvShow', tvShowSchema, 'tvshows');
-
-module.exports = TvShow;
+module.exports = mongoose.model('TvShow', tvShowSchema, 'tvshows');

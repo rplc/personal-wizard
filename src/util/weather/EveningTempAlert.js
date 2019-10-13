@@ -12,9 +12,12 @@ async function main() {
         useNewUrlParser: true
     }).catch(err => console.error(err));
 
-    const lowTemp = getNightLow(weather);
+    const settings = await require('../../model/Settings').getSetting(),
+        eveningTemp = settings.evening_temp_alert,
+        lowTemp = getNightLow(weather);
+    
     console.log(`night low temp of ${lowTemp}°C`);
-    if (lowTemp < -2) {
+    if (lowTemp < eveningTemp.low_temp) {
         p.sendNotification({
             title: 'Es wird kalt!',
             message: `Heute Nacht werden es ${lowTemp}°C. Lieber Scheibe abdecken.`
@@ -23,7 +26,7 @@ async function main() {
     
     const highTemp = getDailyHigh(weather);
     console.log(`day high temp of ${highTemp}°C`);
-    if (highTemp < 20) {
+    if (highTemp < eveningTemp.high_temp) {
         p.sendNotification({
             title: 'Es wird warm...',
             message: `Morgen sollen es ${highTemp}°C werden. Lieber Wecker vorstellen zum Joggen...`

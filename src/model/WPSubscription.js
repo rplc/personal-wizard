@@ -10,6 +10,4 @@ const webPushSubscriptionSchema = new Schema({
     }
 });
 
-const WPSubscription = mongoose.model('WPSubscription', webPushSubscriptionSchema, 'subscriptions');
-
-module.exports = WPSubscription;
+module.exports = mongoose.model('WPSubscription', webPushSubscriptionSchema, 'subscriptions');
