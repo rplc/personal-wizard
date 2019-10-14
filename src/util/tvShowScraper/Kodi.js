@@ -21,7 +21,7 @@ class Kodi {
                     },
                     id: 'libTvShows'
                 }
-            }, (error, response, body) => {
+            }, async (error, response, body) => {
                 if (error) {
                     console.error(error);
                     return;
@@ -29,7 +29,10 @@ class Kodi {
                 
                 const result = body.result,
                     tvshows = result && result.tvshows || [],
+                    ids = [],
                     bulkUpdate = tvshows.map((show) => {
+                        ids.push(show.tvshowid);
+
                         return {
                             updateOne: {
                                 filter: {
@@ -54,6 +57,12 @@ class Kodi {
                             }
                         }
                     });
+                
+                if (ids.length) {
+                    await TvShow.deleteMany({_id: {
+                        $nin: ids
+                    }});
+                }
 
                 TvShow.bulkWrite(bulkUpdate, {}, (err, result) => {
                     if (err) {
