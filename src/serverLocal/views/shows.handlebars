@@ -1,4 +1,28 @@
-<div class="filter">Some Filters here</div>
+<form class="filters">
+    <span class="form-group">
+        <input type="checkbox" name="watched">
+        <label for="watched"><i class="fas fa-eye" title="Watched"></i></label>
+        <input type="checkbox" name="not_watched">
+        <label for="not_watched"><i class="fas fa-eye-slash" title="Unwatched"></i></label>
+    </span>
+    <span class="form-group">
+        <input type="checkbox" name="in_production">
+        <label for="in_production"><i class="fas fa-running" title="In Production"></i></label>
+        <input type="checkbox" name="not_in_production">
+        <label for="not_in_production">
+            <span class="fa-stack fa-1x" title="Dropped">
+                <i class="fas fa-ban fa-stack-1x" style="font-size: 1.5em;color: red"></i>
+                <i class="fas fa-running fa-stack-1x"></i>
+            </span>
+        </label>
+    </span>
+    <span class="form-group">
+        <input type="checkbox" name="blacklist">
+        <label for="blacklisted"><i class="fas fa-book-dead" title="Blacklisted"></i></label>
+    </span>
+    <span class="spacer"></span>
+    <span class="search">Search</span>
+</form>
 
 <div class="main-content"></div>
 

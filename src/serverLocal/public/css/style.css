@@ -20,19 +20,83 @@ h1 {
     margin-top: 0;
 }
 
+.spacer {
+    flex: 1;
+}
+.filters {
+    margin-bottom: 10px;
+    display: flex;
+}
+.filters .form-group {
+    display: inline-flex;
+    align-items: center;
+    height: 35px;
+    border: 1px solid #cccccc;
+    padding: 5px;
+}
+.filters .form-group + .form-group {
+    margin-left: 10px;
+}
+.filters .form-group > input:not(:first-child) {
+    margin-left: 20px;
+}
+.filters .form-group > label:last-child {
+    margin-right: 10px;
+}
+.filters .search {
+    display: inline-flex;
+    align-items: center;
+    background-color: #2925e6;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
 .show {
     border: 1px solid black;
     margin: 2px 0;
     border-radius: 5px;
     display: flex;
 }
+.show .poster {
+    min-width: 92px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #dddddd;
+}
 .show .content {
     flex: 1;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 .show .header {
     display: flex;
 }
 .show .title {
     flex: 1;
+    font-weight: bold;
+}
+.show .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.show .toggleBlacklist {
+    cursor: pointer;
+}
+.show .scraped {
+    flex: 1;
+}
+.show .status {
+    display: flex;
+    height: 32px;
+    align-items: center;
+}
+.show .status > .fas {
+    width: 40px;
+    text-align: center;
 }

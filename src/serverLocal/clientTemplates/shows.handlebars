@@ -1,7 +1,11 @@
 {{#each shows}}
     <div class="show" data-id="{{this._id}}">
         <div class="poster">
-            <img src="https://image.tmdb.org/t/p/w92{{this.external_data.poster_path}}">
+            {{#if this.external_data.poster_path}}
+                <img src="https://image.tmdb.org/t/p/w92{{this.external_data.poster_path}}">
+            {{else}}
+                <i class="fas fa-unlink" title="no poster found..."></i>
+            {{/if}}
         </div>
         <div class="content">
             <div class="header">
@@ -11,16 +15,31 @@
                 </a>
             </div>
             <div class="body">
-                <span class="scraped">
+                <div class="scraped">
                     Seasons scraped: {{this.summary.scraped_seasons}} of {{this.summary.aired_seasons}}
-                </span>
-                <span class="toggleBlacklist">
+                </div>
+                <div class="toggleBlacklist">
                     {{#if this.blacklist}}
-                        <i class="fas fa-book-dead" title="remove from blacklist"></i>
+                        <i class="fas fa-book-dead" title="Remove from Blacklist"></i> Remove from Blacklist
                     {{else}}
-                        <i class="fas fa-book" title="add to blacklist"></i>
+                        <i class="fas fa-book" title="Add to Blacklist"></i> Add to Blacklist
                     {{/if}}
-                </span>
+                </div>
+                <div class="status">
+                    {{#if this.summary.watched}}
+                        <i class="fas fa-eye" title="Watched"></i>
+                    {{else}}
+                        <i class="fas fa-eye-slash" title="Not (completely) watched"></i>
+                    {{/if}}
+                    {{#if this.summary.in_production}}
+                        <i class="fas fa-running" title="In Production"></i>
+                    {{else}}
+                        <span class="fa-stack fa-1x" title="Dropped">
+                            <i class="fas fa-ban fa-stack-1x" style="font-size: 1.5em;color: red"></i>
+                            <i class="fas fa-running fa-stack-1x"></i>
+                        </span>
+                    {{/if}}
+                </div>
             </div>
         </div>
     </div>

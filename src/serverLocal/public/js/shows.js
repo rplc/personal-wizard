@@ -1,9 +1,11 @@
 async function load() {
-    const res = await fetch('/shows/get', {
+    const body = getFilters(),
+        res = await fetch('/shows/get', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify(body)
         }),
         json = await res.json();
 
@@ -28,4 +30,22 @@ async function load() {
     });
 }
 
+function getFilters() {
+    const filters = {};
+
+    for (const checkbox of $('.filters input:checked')) {
+        if (checkbox.name.startsWith('not_')) {
+            filters[checkbox.name.substring(4)] = false;
+        } else {
+            filters[checkbox.name] = true;
+        }
+    }
+
+    return filters;
+}
+
 load();
+
+$('.search').click(() => {
+    load();
+});
