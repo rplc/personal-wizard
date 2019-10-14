@@ -3,6 +3,10 @@ const mongoose = require('mongoose'),
 
 const tvShowSchema = new Schema({
     _id: String,
+    blacklist: {
+        type: Boolean,
+        default: false
+    },
     external_id: String,
     summary: {
         kodi_id: Number,

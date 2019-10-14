@@ -12,8 +12,15 @@ router.post('/get', async (req, res) => {
     });
 });
 
-router.post('/blacklist', (req, res) => {
-    // blacklist show && reload
+router.post('/blacklist', async (req, res) => {
+    const show = await TvShow.findById(req.body.id);
+
+    show.blacklist = !show.blacklist;
+    await show.save();
+
+    res.json({
+        status: 'ok'
+    });
 });
 
 module.exports = router;

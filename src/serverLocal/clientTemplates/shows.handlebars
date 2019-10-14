@@ -1,5 +1,5 @@
 {{#each shows}}
-    <div class="show">
+    <div class="show" data-id="{{this._id}}">
         <div class="poster">
             <img src="https://image.tmdb.org/t/p/w92{{this.external_data.poster_path}}">
         </div>
@@ -11,7 +11,16 @@
                 </a>
             </div>
             <div class="body">
-                Seasons scraped: {{this.summary.scraped_seasons}} of {{this.summary.aired_seasons}}
+                <span class="scraped">
+                    Seasons scraped: {{this.summary.scraped_seasons}} of {{this.summary.aired_seasons}}
+                </span>
+                <span class="toggleBlacklist">
+                    {{#if this.blacklist}}
+                        <i class="fas fa-book-dead" title="remove from blacklist"></i>
+                    {{else}}
+                        <i class="fas fa-book" title="add to blacklist"></i>
+                    {{/if}}
+                </span>
             </div>
         </div>
     </div>
