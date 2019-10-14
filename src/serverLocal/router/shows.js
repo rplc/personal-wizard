@@ -11,7 +11,8 @@ router.post('/get', async (req, res) => {
     for (const [key, value] of Object.entries(req.body)) {
         switch (key) {
             case 'blacklist':
-                filters.blacklist = value;
+                // might be unset
+                filters.blacklist = value ? true : {$ne: true};
                 break;
             case 'watched':
                 filters['summary.watched'] = value;
