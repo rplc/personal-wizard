@@ -1,0 +1,18 @@
+{{#each shows}}
+    <div class="show">
+        <div class="poster">
+            <img src="https://image.tmdb.org/t/p/w92{{this.external_data.poster_path}}">
+        </div>
+        <div class="content">
+            <div class="header">
+                <span class="title">{{this.summary.title}}</span>
+                <a href="{{../baseURL}}{{this.summary.the_movie_db_id}}" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+            <div class="body">
+                Seasons scraped: {{this.summary.scraped_seasons}} of {{this.summary.aired_seasons}}
+            </div>
+        </div>
+    </div>
+{{/each}}

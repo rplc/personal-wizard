@@ -3,3 +3,4 @@ mongo/
 env.js
 .vscode
 src/certs/*.pem
+**/public/js/templates.js

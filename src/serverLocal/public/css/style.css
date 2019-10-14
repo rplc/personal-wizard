@@ -3,7 +3,6 @@ html, body {
     margin: 0;
     padding: 0;
 }
-
 .main {
     width: 100vw;
     max-width: 700px;
@@ -13,9 +12,27 @@ html, body {
     margin: auto;
     padding: 10px;
     background-color: #eeeeee;
-    box-shadow: 5px 0 5px -5px #595959, -5px 0 5px -5px #595959
+    box-shadow: 5px 0 5px -5px #595959, -5px 0 5px -5px #595959;
+    overflow-y: scroll;
 }
 
 h1 {
     margin-top: 0;
+}
+
+.show {
+    border: 1px solid black;
+    margin: 2px 0;
+    border-radius: 5px;
+    display: flex;
+}
+.show .content {
+    flex: 1;
+    padding: 10px;
+}
+.show .header {
+    display: flex;
+}
+.show .title {
+    flex: 1;
 }

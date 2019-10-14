@@ -5,4 +5,7 @@ service cron start
 service persWizPublic start
 
 cd /opt/personalWizard
+
+./node_modules/handlebars/bin/handlebars serverLocal/clientTemplates -f serverLocal/public/js/templates.js
+
 npm start

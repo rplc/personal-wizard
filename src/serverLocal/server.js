@@ -26,7 +26,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routers
-app.use('/', require('./router/index'));
+app.get('/', (req, res) => {
+    res.render('home');
+});
+app.use('/shows', require('./router/shows'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
