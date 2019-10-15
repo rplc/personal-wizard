@@ -7,6 +7,7 @@ const tvShowSchema = new Schema({
         type: Boolean,
         default: false
     },
+    sortTitle: String,
     external_id: String,
     summary: {
         kodi_id: Number,

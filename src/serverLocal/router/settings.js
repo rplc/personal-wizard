@@ -4,7 +4,7 @@ const express = require('express'),
 
 router.get('/', async (req, res) => {
     res.render('settings', {
-        setting: await Settings.findOne()
+        setting: await Settings.getSetting()
     });
 });
 

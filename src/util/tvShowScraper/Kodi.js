@@ -48,6 +48,7 @@ class Kodi {
                                             scraped_seasons: show.season,
                                             watched: show.playcount
                                         },
+                                        sortTitle: show.title.toLowerCase().replace(/^the /, ''),
                                         external_id: show.imdbnumber,
                                         kodi_scape_ts: Date.now(),
                                         kodi_data: show

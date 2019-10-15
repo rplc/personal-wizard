@@ -22,12 +22,8 @@ async function main() {
             $where: 'this.summary.aired_seasons > this.summary.scraped_seasons'
         }]
     }, null, {
-        // collation en needed for case insensitive sort
-        collation: {
-            locale: 'en'
-        },
         sort: {
-            'summary.title': 1
+            sortTitle: 1
         }
     }, (error, docs) => {
         if (error) {
