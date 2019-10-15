@@ -7,8 +7,8 @@ const settingsSchema = new Schema({
         high_temp: { type: Number, default: 20 }
     },
     walking_time_alert: {
-        intensity: { type: Number, default: 0 },
-        probability: { type: Number, default: 0 }
+        intensity: { type: Number, default: 0.03 },
+        probability: { type: Number, default: 0.03 }
     }
 });
 
