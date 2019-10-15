@@ -18,7 +18,7 @@ async function main() {
 
     if (rain && rain.intensity >= walkingTime.intensity && rain.probability >= walkingTime.probability) {
         console.log(`${new Date().toDateString()}: Intensity: ${rain.intensity}mm/h, probability: ${rain.probability}%`);
-        p.sendNotification({
+        await p.sendNotification({
             title: 'Beim Gassi könnte es regnen',
             message: `Intensität: ${rain.intensity} mm/h, Wahrscheinlichkeit: ${rain.probability}%`
         });

@@ -18,7 +18,7 @@ async function main() {
     
     console.log(`night low temp of ${lowTemp}°C`);
     if (lowTemp < eveningTemp.low_temp) {
-        p.sendNotification({
+        await p.sendNotification({
             title: 'Es wird kalt!',
             message: `Heute Nacht werden es ${lowTemp}°C. Lieber Scheibe abdecken.`
         });
@@ -26,8 +26,8 @@ async function main() {
     
     const highTemp = getDailyHigh(weather);
     console.log(`day high temp of ${highTemp}°C`);
-    if (highTemp < eveningTemp.high_temp) {
-        p.sendNotification({
+    if (highTemp > eveningTemp.high_temp) {
+        await p.sendNotification({
             title: 'Es wird warm...',
             message: `Morgen sollen es ${highTemp}°C werden. Lieber Wecker vorstellen zum Joggen...`
         });
