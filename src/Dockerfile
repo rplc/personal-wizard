@@ -1,5 +1,7 @@
 FROM node:stretch-slim
 
+ENV TZ=Europe/Berlin
+
 RUN apt-get update && apt-get install -y cron certbot
 
 COPY bash/cron/periodic /etc/periodic

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export TZ="Europe/Berlin"
+/usr/local/bin/node /opt/personalWizard/util/binaryClock/ScheduleCheck.js

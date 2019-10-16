@@ -31,6 +31,7 @@ app.get('/', (req, res) => {
 });
 app.use('/shows', require('./router/shows'));
 app.use('/settings', require('./router/settings'));
+app.use('/clock', require('./router/binaryClock'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

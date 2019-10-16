@@ -1,0 +1,71 @@
+<form method="POST" action="/clock/save/{{schedule._id}}">
+    <label for="label">Name: </label><input type="text" name="label" value="{{schedule.label}}">
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>On</th>
+                <th>Off</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Monday</td>
+                <td><select class="time" name="days.1.on_time" data-value="{{schedule.days.1.on_time}}"></select></td>
+                <td><select class="time" name="days.1.off_time" data-value="{{schedule.days.1.off_time}}"></select></td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td><select class="time" name="days.2.on_time" data-value="{{schedule.days.2.on_time}}"></select></td>
+                <td><select class="time" name="days.2.off_time" data-value="{{schedule.days.2.off_time}}"></select></td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td><select class="time" name="days.3.on_time" data-value="{{schedule.days.3.on_time}}"></select></td>
+                <td><select class="time" name="days.3.off_time" data-value="{{schedule.days.3.off_time}}"></select></td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td><select class="time" name="days.4.on_time" data-value="{{schedule.days.4.on_time}}"></select></td>
+                <td><select class="time" name="days.4.off_time" data-value="{{schedule.days.4.off_time}}"></select></td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td><select class="time" name="days.5.on_time" data-value="{{schedule.days.5.on_time}}"></select></td>
+                <td><select class="time" name="days.5.off_time" data-value="{{schedule.days.5.off_time}}"></select></td>
+            </tr>
+            <tr>
+                <td>Saturday</td>
+                <td><select class="time" name="days.6.on_time" data-value="{{schedule.days.6.on_time}}"></select></td>
+                <td><select class="time" name="days.6.off_time" data-value="{{schedule.days.6.off_time}}"></select></td>
+            </tr>
+            <tr>
+                <td>Sunday</td>
+                <td><select class="time" name="days.0.on_time" data-value="{{schedule.days.0.on_time}}"></select></td>
+                <td><select class="time" name="days.0.off_time" data-value="{{schedule.days.0.off_time}}"></select></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="submit">Save</button>
+</form>
+
+<script>
+    const combos = $('select.time');
+    let innerHtml = '';
+
+    for (let i = 0; i <= 23; i++) {
+        innerHtml += `<option value="${i}:00">${i}:00</option>`;
+        innerHtml += `<option value="${i}:15">${i}:15</option>`;
+        innerHtml += `<option value="${i}:30">${i}:30</option>`;
+        innerHtml += `<option value="${i}:45">${i}:45</option>`;
+    }
+
+    combos.html(innerHtml);
+
+    combos.each((index, select) => {
+        const combo = $(select);
+
+        combo.val(combo.data('value'));
+    });
+</script>

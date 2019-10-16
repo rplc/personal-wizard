@@ -1,0 +1,33 @@
+<h1>Current schedules</h1>
+
+<form method="POST" action="/clock/man/on"><button type="submit"><i class="fas fa-power-off" style="color: green"></i> Manual on</button></form>
+<form method="POST" action="/clock/man/off"><button type="submit"><i class="fas fa-power-off" style="color: red"></i> Manual off</button></form>
+
+{{#if schedules.length}}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Active</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each schedules}}
+                <tr>
+                    <td>{{this.label}}</td>
+                    <td>{{#if this.active}}Active{{/if}}</td>
+                    <td>
+                        <form method="GET" action="/clock/edit/{{this._id}}"><button type="submit"><i class="fas fa-pencil-alt"></i></button></form>
+                        <form method="POST" action="/clock/setActive/{{this._id}}"><button type="submit"><i class="fas fa-power-off"></i></button></form>
+                        <form method="POST" action="/clock/delete/{{this._id}}"><button type="submit"><i class="fas fa-trash-alt"></i></button></form>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <div>No schedules set...</div>
+{{/if}}
+
+<form method="GET" action="/clock/edit/"><button type="submit"><i class="fas fa-plus-square"></i> Create a new Schedule</button></form>
