@@ -9,7 +9,7 @@
         </div>
         <div class="content">
             <div class="header">
-                <span class="title">{{this.summary.title}}</span>
+                <span class="title">{{this.summary.title}} #{{this._id}}</span>
                 <a href="{{../baseURL}}{{this.summary.the_movie_db_id}}" target="_blank">
                     <i class="fas fa-external-link-alt"></i>
                 </a>
@@ -39,6 +39,9 @@
                             <i class="fas fa-running fa-stack-1x"></i>
                         </span>
                     {{/if}}
+                </div>
+                <div class="progressBar" data-seen="{{this.summary.episodes_watched}}" data-total="{{this.summary.episodes}}">
+                    <span class="filler" style="width: calc({{this.summary.episodes_watched}}% / {{this.summary.episodes}} * 100)">&nbsp;</span>
                 </div>
             </div>
         </div>

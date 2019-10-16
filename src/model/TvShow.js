@@ -15,6 +15,8 @@ const tvShowSchema = new Schema({
         title: String,
         scraped_seasons: Number,
         watched: Boolean,
+        episodes: Number,
+        episodes_watched: Number,
         aired_seasons: Number,
         in_production: Boolean
     },
@@ -25,7 +27,9 @@ const tvShowSchema = new Schema({
         season: Number,
         title: String,
         tvshowid: Number,
-        year: Number
+        year: Number,
+        episode: Number,
+        watchedepisodes: Number
     },
     kodi_scape_ts: {
         type: Date,

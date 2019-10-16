@@ -17,7 +17,8 @@ class Kodi {
                     jsonrpc: '2.0',
                     method: 'VideoLibrary.GetTVShows',
                     params: {
-                        properties: ['title', 'year', 'imdbnumber', 'playcount', 'season']
+                        properties: ['title', 'year', 'imdbnumber', 'season', 'episode',
+                            'watchedepisodes']
                     },
                     id: 'libTvShows'
                 }
@@ -46,7 +47,9 @@ class Kodi {
                                             the_movie_db_id: show.imdbnumber,
                                             title: show.title,
                                             scraped_seasons: show.season,
-                                            watched: show.playcount
+                                            episodes: show.episode,
+                                            episodes_watched: show.watchedepisodes,
+                                            watched: show.episode === show.watchedepisodes
                                         },
                                         sortTitle: show.title.toLowerCase().replace(/^the /, ''),
                                         external_id: show.imdbnumber,
