@@ -25,11 +25,27 @@ async function main() {
         sort: {
             sortTitle: 1
         }
-    }, (error, docs) => {
+    }, async (error, docs) => {
         if (error) {
             console.error(error);
             return;
         }
+
+        const ids = docs.map(show => {
+            return show._id
+        });
+
+        await TvShow.updateMany(null, {
+            seen: false 
+        });
+
+        await TvShow.updateMany({
+            _id: {
+                $in: ids
+            }
+        }, {
+            seen: true 
+        });
 
         mongoose.disconnect();
 
