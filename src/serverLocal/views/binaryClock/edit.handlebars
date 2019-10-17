@@ -11,38 +11,38 @@
         <tbody>
             <tr>
                 <td>Monday</td>
-                <td><select class="time" name="days.1.on_time" data-value="{{schedule.days.1.on_time}}"></select></td>
-                <td><select class="time" name="days.1.off_time" data-value="{{schedule.days.1.off_time}}"></select></td>
+                <td><select class="time on" name="days.1.on_time" data-value="{{schedule.days.1.on_time}}"></select></td>
+                <td><select class="time off" name="days.1.off_time" data-value="{{schedule.days.1.off_time}}"></select></td>
             </tr>
             <tr>
                 <td>Tuesday</td>
-                <td><select class="time" name="days.2.on_time" data-value="{{schedule.days.2.on_time}}"></select></td>
-                <td><select class="time" name="days.2.off_time" data-value="{{schedule.days.2.off_time}}"></select></td>
+                <td><select class="time on" name="days.2.on_time" data-value="{{schedule.days.2.on_time}}"></select></td>
+                <td><select class="time off" name="days.2.off_time" data-value="{{schedule.days.2.off_time}}"></select></td>
             </tr>
             <tr>
                 <td>Wednesday</td>
-                <td><select class="time" name="days.3.on_time" data-value="{{schedule.days.3.on_time}}"></select></td>
-                <td><select class="time" name="days.3.off_time" data-value="{{schedule.days.3.off_time}}"></select></td>
+                <td><select class="time on" name="days.3.on_time" data-value="{{schedule.days.3.on_time}}"></select></td>
+                <td><select class="time off" name="days.3.off_time" data-value="{{schedule.days.3.off_time}}"></select></td>
             </tr>
             <tr>
                 <td>Thursday</td>
-                <td><select class="time" name="days.4.on_time" data-value="{{schedule.days.4.on_time}}"></select></td>
-                <td><select class="time" name="days.4.off_time" data-value="{{schedule.days.4.off_time}}"></select></td>
+                <td><select class="time on" name="days.4.on_time" data-value="{{schedule.days.4.on_time}}"></select></td>
+                <td><select class="time off" name="days.4.off_time" data-value="{{schedule.days.4.off_time}}"></select></td>
             </tr>
             <tr>
                 <td>Friday</td>
-                <td><select class="time" name="days.5.on_time" data-value="{{schedule.days.5.on_time}}"></select></td>
-                <td><select class="time" name="days.5.off_time" data-value="{{schedule.days.5.off_time}}"></select></td>
+                <td><select class="time on" name="days.5.on_time" data-value="{{schedule.days.5.on_time}}"></select></td>
+                <td><select class="time off" name="days.5.off_time" data-value="{{schedule.days.5.off_time}}"></select></td>
             </tr>
             <tr>
                 <td>Saturday</td>
-                <td><select class="time" name="days.6.on_time" data-value="{{schedule.days.6.on_time}}"></select></td>
-                <td><select class="time" name="days.6.off_time" data-value="{{schedule.days.6.off_time}}"></select></td>
+                <td><select class="time on" name="days.6.on_time" data-value="{{schedule.days.6.on_time}}"></select></td>
+                <td><select class="time off" name="days.6.off_time" data-value="{{schedule.days.6.off_time}}"></select></td>
             </tr>
             <tr>
                 <td>Sunday</td>
-                <td><select class="time" name="days.0.on_time" data-value="{{schedule.days.0.on_time}}"></select></td>
-                <td><select class="time" name="days.0.off_time" data-value="{{schedule.days.0.off_time}}"></select></td>
+                <td><select class="time on" name="days.0.on_time" data-value="{{schedule.days.0.on_time}}"></select></td>
+                <td><select class="time off" name="days.0.off_time" data-value="{{schedule.days.0.off_time}}"></select></td>
             </tr>
         </tbody>
     </table>
@@ -63,9 +63,14 @@
 
     combos.html(innerHtml);
 
-    combos.each((index, select) => {
+    $('select.time.on').each((index, select) => {
         const combo = $(select);
 
-        combo.val(combo.data('value'));
+        combo.val(combo.data('value') || '9:00');
+    });
+    $('select.time.off').each((index, select) => {
+        const combo = $(select);
+
+        combo.val(combo.data('value') || '20:00');
     });
 </script>

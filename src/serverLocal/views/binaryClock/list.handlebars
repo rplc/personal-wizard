@@ -1,25 +1,33 @@
-<h1>Current schedules</h1>
+<h1>Binary Clock Control</h1>
 
-<form method="POST" action="/clock/man/on"><button type="submit"><i class="fas fa-power-off" style="color: green"></i> Manual on</button></form>
-<form method="POST" action="/clock/man/off"><button type="submit"><i class="fas fa-power-off" style="color: red"></i> Manual off</button></form>
+<div class="manualControl">
+    <form method="POST" action="/clock/man/on">
+        <button type="submit">
+            <i class="fas fa-power-off" style="color: green"></i> Manual on
+        </button>
+    </form>
+    <form method="POST" action="/clock/man/off">
+        <button type="submit">
+            <i class="fas fa-power-off" style="color: red"></i> Manual off
+        </button>
+    </form>
+</div>
+
+<h2>Schedules</h2>
 
 {{#if schedules.length}}
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Active</th>
-                <th></th>
-            </tr>
-        </thead>
+    <table class="schedules">
         <tbody>
             {{#each schedules}}
-                <tr>
-                    <td>{{this.label}}</td>
-                    <td>{{#if this.active}}Active{{/if}}</td>
+                <tr {{#if this.active}}class="active"{{/if}}>
+                    <td>{{this.label}} {{#if this.active}}(active){{/if}}</td>
                     <td>
+                        {{#if this.active}}
+                            <button class="activate" disabled title="currently active"><i class="fas fa-power-off" style="color: green"></i></button>
+                        {{else}}
+                            <form class="activate" method="POST" action="/clock/setActive/{{this._id}}"><button type="submit"><i class="fas fa-power-off"></i></button></form>
+                        {{/if}}
                         <form method="GET" action="/clock/edit/{{this._id}}"><button type="submit"><i class="fas fa-pencil-alt"></i></button></form>
-                        <form method="POST" action="/clock/setActive/{{this._id}}"><button type="submit"><i class="fas fa-power-off"></i></button></form>
                         <form method="POST" action="/clock/delete/{{this._id}}"><button type="submit"><i class="fas fa-trash-alt"></i></button></form>
                     </td>
                 </tr>
@@ -31,3 +39,33 @@
 {{/if}}
 
 <form method="GET" action="/clock/edit/"><button type="submit"><i class="fas fa-plus-square"></i> Create a new Schedule</button></form>
+
+<style>
+    .manualControl {
+        text-align: center;
+    }
+    .manualControl form,
+    .schedules form {
+        display: inline-block;
+    }
+    .schedules {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .schedules,
+    .schedules tr {
+        border: 1px solid black;
+    }
+    .schedules td:last-child {
+        width: 200px;
+    }
+    .schedules .active td:first-child {
+        font-weight: bold;
+    }
+    .schedules .active td {
+        background-color: #68c168;
+    }
+    .schedules .activate {
+        margin-right: 40px;
+    }
+</style>
