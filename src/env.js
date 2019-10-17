@@ -2,6 +2,11 @@ module.exports = {
     'kodi': '',
     'tmdbAPI': '',
     'mongo': '',
+    'darksky': {
+        'api': '',
+        'latitude': 0,
+        'longitude': 0
+    },
     'vapid': {
         'publicKey':'',
         'privateKey':''
@@ -17,5 +22,9 @@ module.exports = {
             }
         },
         'receiver': ''
+    },
+    'binaryClock': {
+        'host': '',
+        'port': ''
     }
 }
