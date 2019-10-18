@@ -1,4 +1,4 @@
-<form class="filters">
+<form class="filters inline-form">
     <span class="form-group">
         <input type="checkbox" name="watched">
         <label for="watched"><i class="fas fa-eye" title="Watched"></i></label>
@@ -23,9 +23,155 @@
         <label for="blacklist"><i class="fas fa-book-dead" title="Blacklisted"></i></label>
     </span>
     <span class="spacer"></span>
-    <span class="search">Search</span>
+    <span class="button search">Search</span>
 </form>
 
 <div class="main-content"></div>
 
-<script src="/js/shows.js"></script>
+<script>
+    async function load() {
+        const mainContent = $('.main-content');
+        mainContent.html('<span class="fa-3x"><i class="fas fa-sync fa-spin"></i></span>');
+        mainContent.addClass('loading');
+
+        const body = getFilters(),
+            res = await fetch('/shows/get', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }),
+            json = await res.json();
+
+        json.baseURL = 'https://www.themoviedb.org/tv/';
+
+        mainContent.html(Handlebars.templates.shows(json));
+        mainContent.removeClass('loading');
+
+        $('.toggleBlacklist').click(async (event) => {
+            const show = $(event.target).closest('.show');
+
+            await fetch('/shows/blacklist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: show.data('id')
+                })
+            });
+
+            load();
+        });
+    }
+
+    function getFilters() {
+        const filters = {};
+
+        for (const checkbox of $('.filters input:checked')) {
+            if (checkbox.name.startsWith('not_')) {
+                filters[checkbox.name.substring(4)] = false;
+            } else {
+                filters[checkbox.name] = true;
+            }
+        }
+
+        return filters;
+    }
+
+    load();
+
+    $('.search').click(() => {
+        load();
+    });
+</script>
+
+<style>
+    .body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main-content {
+        flex: 1;
+    }
+
+    .main-content.loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .filters {
+        margin-bottom: 10px;
+        display: block;
+    }
+    .filters .search {
+        float: right;
+    }
+
+    .show {
+        border: 1px solid #000000;
+        margin: 2px 0;
+        border-radius: 5px;
+        display: flex;
+    }
+    .show .poster {
+        min-width: 92px;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #dddddd;
+    }
+    .show .content {
+        flex: 1;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+    .show .header {
+        display: flex;
+    }
+    .show .title {
+        flex: 1;
+        font-weight: bold;
+    }
+    .show .body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .show .toggleBlacklist {
+        cursor: pointer;
+    }
+    .show .scraped {
+        flex: 1;
+    }
+    .show .status {
+        display: flex;
+        height: 32px;
+        align-items: center;
+    }
+    .show .status > .fas {
+        width: 40px;
+        text-align: center;
+    }
+    .show .progressBar {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        color: #000000;
+        position: relative;
+    }
+    .show .progressBar:hover::before {
+        content: 'Seen ' attr(data-seen) ' of ' attr(data-total);
+        position: absolute;
+        left: 10px;
+    }
+    .show .progressBar .filler {
+        display: inline-block;
+        height: 100%;
+        background-color: #00ca00;
+    }
+</style>

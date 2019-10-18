@@ -18,13 +18,6 @@
                 <div class="scraped">
                     Seasons scraped: {{this.summary.scraped_seasons}} of {{this.summary.aired_seasons}}
                 </div>
-                <div class="toggleBlacklist">
-                    {{#if this.blacklist}}
-                        <i class="fas fa-book-dead" title="Remove from Blacklist"></i> Remove from Blacklist
-                    {{else}}
-                        <i class="fas fa-book" title="Add to Blacklist"></i> Add to Blacklist
-                    {{/if}}
-                </div>
                 <div class="status">
                     {{#if this.summary.watched}}
                         <i class="fas fa-eye" title="Watched"></i>
@@ -39,6 +32,13 @@
                             <i class="fas fa-running fa-stack-1x"></i>
                         </span>
                     {{/if}}
+                    <span class="toggleBlacklist">
+                        {{#if this.blacklist}}
+                            <i class="fas fa-book-dead" title="Remove from Blacklist"></i> Remove from Blacklist
+                        {{else}}
+                            <i class="fas fa-book" title="Add to Blacklist"></i> Add to Blacklist
+                        {{/if}}
+                    </span>
                 </div>
                 <div class="progressBar" data-seen="{{this.summary.episodes_watched}}" data-total="{{this.summary.episodes}}">
                     <span class="filler" style="width: calc({{this.summary.episodes_watched}}% / {{this.summary.episodes}} * 100)">&nbsp;</span>

@@ -54,111 +54,47 @@ html, body {
 .spacer {
     flex: 1;
 }
-.filters {
-    margin-bottom: 10px;
-    display: flex;
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    background-color: #2925e6;
+    padding: 15px;
+    border-radius: 5px;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
 }
-.filters .form-group {
+
+.inline-form .form-group {
     display: inline-flex;
     align-items: center;
     height: 35px;
     border: var(--border);
     padding: 5px;
 }
-.filters .form-group + .form-group {
+.inline-form .form-group + .form-group {
     margin-left: 10px;
 }
-.filters .form-group > input:not(:first-child) {
+.inline-form .form-group > input:not(:first-child) {
     margin-left: 20px;
 }
-.filters .form-group > label:last-child {
+.inline-form .form-group > label:last-child {
     margin-right: 10px;
 }
-.filters .search {
-    display: inline-flex;
-    align-items: center;
-    background-color: #2925e6;
-    padding: 10px;
-    border-radius: 5px;
-    color: #ffffff;
-    font-weight: bold;
-    cursor: pointer;
-}
-.show {
-    border: 1px solid #000000;
-    margin: 2px 0;
-    border-radius: 5px;
-    display: flex;
-}
-.show .poster {
-    min-width: 92px;
-    min-height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #dddddd;
-}
-.show .content {
-    flex: 1;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-}
-.show .header {
-    display: flex;
-}
-.show .title {
-    flex: 1;
-    font-weight: bold;
-}
-.show .body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-.show .toggleBlacklist {
-    cursor: pointer;
-}
-.show .scraped {
-    flex: 1;
-}
-.show .status {
-    display: flex;
-    height: 32px;
-    align-items: center;
-}
-.show .status > .fas {
-    width: 40px;
-    text-align: center;
-}
-.show .progressBar {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #000000;
-    position: relative;
-}
-.show .progressBar:hover::before {
-    content: 'Seen ' attr(data-seen) ' of ' attr(data-total);
-    position: absolute;
-    left: 10px;
-}
-.show .progressBar .filler {
-    display: inline-block;
-    height: 100%;
-    background-color: #00ca00;
-}
 
-div.form-group {
+.block-form .form-group {
     padding: 10px;
     border: var(--border);
     border-radius: 5px;
     position: relative;
     margin: 10px 0;
 }
-div.form-group + .form-group {
+.block-form .form-group + .form-group {
     margin-top: 20px;
 }
-div.form-group > .title {
+.block-form .form-group > .title {
     position: absolute;
     top: -10px;
     background: var(--content-background);
