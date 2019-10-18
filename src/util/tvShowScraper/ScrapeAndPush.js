@@ -34,6 +34,15 @@ async function main() {
         }
 
         if (docs.length) {
+            const ids = docs.map(show => {return show._id});
+            await TvShow.updateMany({
+                _id: {
+                    $in: ids
+                }
+            }, {
+                seen: true 
+            });
+
             await sendPush(docs);
         }
 

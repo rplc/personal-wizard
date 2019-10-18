@@ -13,6 +13,7 @@ class Pusher {
             webPush = require('web-push'),
             env = require('../env');        
 
+        payload.title = 'pers-wiz ' + payload.title;
         payload.icon = payload.icon || 'https://myocto.duckdns.org/img/personalWizard_512.png';
 
         return new Promise((resolve, reject) => {
