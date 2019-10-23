@@ -2,7 +2,6 @@ async function main() {
     const mongoose = require('mongoose'),
         env = require('../../env');
 
-    console.log(process.env);
     mongoose.Promise = global.Promise;
     mongoose.connect(env.mongo, {
         useNewUrlParser: true
