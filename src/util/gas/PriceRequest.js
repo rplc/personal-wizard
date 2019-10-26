@@ -58,12 +58,9 @@ async function fetchPrices(apiKey) {
                 });
 
                 // cleanup db
-                const now = new Date();
-                now.setDate(-14);
-
                 await GasPrices.deleteMany({
                     ts: {
-                        $lt: now
+                        $lt: Date.now() - 1209600000 /*14 days*/
                     }
                 });
 

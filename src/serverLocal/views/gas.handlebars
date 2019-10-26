@@ -1,0 +1,161 @@
+<div style="width:100%;">
+    <canvas id="canvas"></canvas>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/css/Chart.min.css">
+<script src="/js/Chart.bundle.min.js"></script>
+
+<script>
+    const labels = [],
+        labelEnd = new Date();
+    labelEnd.setHours(23);
+    labelEnd.setMinutes(59);
+    let label = new Date();
+    label.setHours(0);
+    label.setMinutes(0);
+
+    while(label < labelEnd) {
+        labels.push(label)
+
+        label = new Date(label.getTime() + 3600000 /*1 h*/);
+    }
+
+    window.minGraph = {};
+    window.minGraph.config = {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: []
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Minima'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+                callbacks: {
+                    title: function(tooltipItems, data) {
+                        var item = tooltipItems[0],
+                            title = item && (item.label || item.xLabel);
+
+                        return 'Minimum am ' + title;
+                    },
+                    label: function(item, data) {
+                        var datasetLabel = data.datasets[item.datasetIndex].label || '';
+                        var dataPoint = data.datasets[item.datasetIndex].data[item.index];
+                        var station = window.stations[dataPoint.station];
+                        return datasetLabel + ': (' + item.xLabel + ', ' + item.yLabel + ', ' + station.name + ')';
+                    }
+                }
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'minute',
+                        displayFormats: {
+                            minute: 'H:mm'
+                        },
+                        tooltipFormat: 'H:mm'
+                    },
+                    distribution: 'series',
+                    ticks: {
+                        source: 'labels'
+                    }
+                }]
+            }
+        }
+    };
+
+    async function load() {
+        const res = await fetch('/gas/get', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }),
+            json = await res.json(),
+            dataSet = [{
+                label: 'Sonntag',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [],
+                fill: false
+            }, {
+                label: 'Montag',
+                backgroundColor: 'rgb(255, 159, 64)',
+                borderColor: 'rgb(255, 159, 64)',
+                data: [],
+                fill: false
+            }, {
+                label: 'Dienstag',
+                backgroundColor: 'rgb(255, 205, 86)',
+                borderColor: 'rgb(255, 205, 86)',
+                data: [],
+                fill: false
+            }, {
+                label: 'Mittwoch',
+                backgroundColor: 'rgb(75, 192, 192)',
+                borderColor: 'rgb(75, 192, 192)',
+                data: [],
+                fill: false
+            }, {
+                label: 'Donnerstag',
+                backgroundColor: 'rgb(54, 162, 235)',
+                borderColor: 'rgb(54, 162, 235)',
+                data: [],
+                fill: false
+            }, {
+                label: 'Freitag',
+                backgroundColor: 'rgb(153, 102, 255)',
+                borderColor: 'rgb(153, 102, 255)',
+                data: [],
+                fill: false
+            }, {
+                label: 'Samstag',
+                backgroundColor: 'rgb(201, 203, 207)',
+                borderColor: 'rgb(201, 203, 207)',
+                data: [],
+                fill: false
+            }];
+
+        window.stations = json.stations;
+
+        for(const price of json.prices) {
+            if (!price.min || !price.prices[price.min]) {
+                continue;
+            }
+
+            const priceDate = new Date(price.ts),
+                remappedDate = new Date(),
+                dataPoint = {};
+
+            // make all dates relative to today
+            remappedDate.setHours(priceDate.getHours());
+            remappedDate.setMinutes(priceDate.getMinutes());
+
+            dataPoint.x = remappedDate;
+            dataPoint.y = price.prices[price.min];
+            dataPoint.station = price.min;
+
+            dataSet[priceDate.getDay()].data.push(dataPoint);
+        }
+
+        // move sunday to the end of the array; you sick bastards...
+        dataSet.push(dataSet.shift());
+
+        window.minGraph.config.data.datasets = dataSet;
+
+        window.minGraph.chart = new Chart($('#canvas'), window.minGraph.config);
+    }
+
+    load();
+
+</script>
