@@ -22,11 +22,24 @@ async function main() {
     mongoose.disconnect();
 }
 
+/**
+ * Checks if in the given schedule an on or off command occured around the current time. If on and
+ * off time are the same nothing will be done.
+ * 
+ * @param {ClockSchedule} schedule The schedule to check agains.
+ * @returns {String|null} Returns the command to execute (if any).
+ */
 function getCommand(schedule) {
     const now = new Date(),
         lowDate = new Date(now.valueOf() - 840000),
         highDate = new Date(now.valueOf() + 60000),
-        onDate = schedule.getOnDate(),
+        day = schedule.getDay();
+
+    if (day.on_time === day.off_time) {
+        return;
+    }
+
+    const onDate = schedule.getOnDate(),
         offDate = schedule.getOffDate();
         
     if (onDate > lowDate && highDate > onDate) {

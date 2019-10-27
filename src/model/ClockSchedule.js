@@ -20,6 +20,12 @@ clockScheduleSchema.statics.getActive = async function() {
     });
 };
 
+clockScheduleSchema.methods.getDay = function() {
+    const date = new Date();
+
+    return this.days[date.getDay()];
+};
+
 clockScheduleSchema.methods.getOnDate = function() {
     const date = new Date(),
         timeParts = this.days[date.getDay()].on_time.split(':');
