@@ -17,10 +17,11 @@ async function main() {
         rain = getRainStatus(weather);
 
     if (rain && rain.intensity >= walkingTime.intensity && rain.probability >= walkingTime.probability) {
-        console.log(`${new Date().toDateString()}: Intensity: ${rain.intensity}mm/h, probability: ${rain.probability}%`);
+        const dispIntensity = Math.round(rain.intensity * 100) / 100;
+
         await p.sendNotification({
             title: 'Beim Gassi könnte es regnen',
-            message: `Intensität: ${rain.intensity} mm/h, Wahrscheinlichkeit: ${rain.probability}%`
+            message: `Amount: ${dispIntensity}mm/h, Probability: ${rain.probability}%`
         });
     }
 
